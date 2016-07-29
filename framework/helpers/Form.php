@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0
+ * @version 1.0.1
  * 
  */
 
@@ -36,52 +36,45 @@ class Form {
      * @param boolean $base_url Solo poner false si enviará datos a otra página externa.<br>Only write false if you'll send data to another external website.
      * @return string La etiqueta <form> y atributos.<br>The <form> tag and attributes.
      */
-    public static function open($action, $method = 'post', array $other = null, $base_url = true){
+    public static function open($action, $method = 'post', array $other = array(), $base_url = true){
         $form_open = "\n";
         $form_open.= '<form ';
-        if($base_url == true){
-            // $form_open.= 'action="'.base_url($action).'" ';
+        if($base_url){
             $form_open.= 'action="'.App::base($action).'" ';
-        } elseif($base_url == false){
+        } else {
             $form_open.= 'action="'.$action.'" ';
         }
-        $form_open.= 'method="'.$method.'"';        
-        if(is_null($other)){
-            $form_open.= '';
-        } else {
-            foreach($other as $attr => $value){
-                $form_open.= ' '.$attr.'="'.$value.'"';
-            }
+        $form_open.= 'method="'.$method.'"';                
+        foreach($other as $attr => $value){
+            $form_open.= ' '.$attr.'="'.$value.'"';
         }
         $form_open.= '>';
         $form_open.= "\n";
         return $form_open;
     }
     
-    public static function upload($action, $method = 'post', array $other = null, $base_url = true){
+    /**
+     *
+     */
+    public static function upload($action, $method = 'post', array $other = array(), $base_url = true){
         $form_open = "\n";
         $form_open.= '<form ';
-        if($base_url == true){
-            // $form_open.= 'action="'.base_url($action).'" ';
+        if($base_url){            
             $form_open.= 'action="'.App::base($action).'" ';
-        } elseif($base_url == false){
+        } else {
             $form_open.= 'action="'.$action.'" ';
         }
         $form_open.= 'method="'.$method.'"';        
-        $form_open.= ' enctype="multipart/form-data"';        
-        if(is_null($other)){
-            $form_open.= '';
-        } else {
-            foreach($other as $attr => $value){
-                $form_open.= ' '.$attr.'="'.$value.'"';
-            }
+        $form_open.= ' enctype="multipart/form-data"';                
+        foreach($other as $attr => $value){
+            $form_open.= ' '.$attr.'="'.$value.'"';
         }
         $form_open.= '>';
         $form_open.= "\n";
         return $form_open;
     }
 
-        /**
+    /**
      * Devuelve el cierre de la etiqueta <form>.<br><br>
      * Returns the <form> tag closed.
      * @return string La etiqueta </form>.<br>The </form> tag.
@@ -102,26 +95,16 @@ class Form {
      * @param array $other Otros atributos.<br>Other attributes.
      * @return string La etiqueta <input type="text" ...><br>The <input type="text" ...> tag.
      */
-    public static function text($name, $value = null, $required = false, array $other = null){
+    public static function text($name, $value = '', $required = false, array $other = array()){
         $text = '<input type="text" ';
         $text.= 'name="'.$name.'"';
-        if(is_null($value)){
-            $text.= '';
-        } else {
-            $text.= ' value="'.$value.'"';
-        }
-        if($required == false){
-            $text.= '';
-        } else {
+        $text.= ' value="'.$value.'"';
+        if($required){
             $text.= ' required="required"';
         }
-        if(is_null($other)){
-            $text.= '';
-        } else {
-            foreach($other as $attr => $XD){
-                $text.= ' '.$attr.'="'.$XD.'"';
-            }
-        }
+        foreach($other as $attr => $XD){
+            $text.= ' '.$attr.'="'.$XD.'"';
+        }        
         $text.= '>';
         return $text;
     }
@@ -135,25 +118,15 @@ class Form {
      * @param array $other Otros atributos.<br>Other attributes.
      * @return string La etiqueta <input type="password" ...><br>The <input type="password" ...> tag.
      */
-    public static function password($name, $value = null, $required = false, array $other = null){
+    public static function password($name, $value = '', $required = false, array $other = array()){
         $password = '<input type="password" ';
         $password.= 'name="'.$name.'"';
-        if(is_null($value)){
-            $password.= '';
-        } else {
-            $password.= ' value="'.$value.'"';
-        }
-        if($required == false){
-            $password.= '';
-        } else {
+        $password.= ' value="'.$value.'"';
+        if($required){
             $password.= ' required="required"';
         }
-        if(is_null($other)){
-            $password.= '';
-        } else {
-            foreach($other as $attr => $XD){
-                $password.= ' '.$attr.'="'.$XD.'"';
-            }
+        foreach($other as $attr => $XD){
+            $password.= ' '.$attr.'="'.$XD.'"';
         }
         $password.= '>';
         return $password;
@@ -168,25 +141,15 @@ class Form {
      * @param array $other Otros atributos.<br>Other attributes.
      * @return string La etiqueta <input type="email" ...><br>The <input type="email" ...> tag.
      */
-    public static function email($name, $value = null, $required = false, array $other = null){
+    public static function email($name, $value = '', $required = false, array $other = array()){
         $email = '<input type="email" ';
         $email.= 'name="'.$name.'"';
-        if(is_null($value)){
-            $email.= '';
-        } else {
-            $email.= ' value="'.$value.'"';
-        }
-        if($required == false){
-            $email.= '';
-        } else {
+        $email.= ' value="'.$value.'"';
+        if($required){
             $email.= ' required="required"';
-        }
-        if(is_null($other)){
-            $email.= '';
-        } else {
-            foreach($other as $attr => $XD){
-                $email.= ' '.$attr.'="'.$XD.'"';
-            }
+        }        
+        foreach($other as $attr => $XD){
+            $email.= ' '.$attr.'="'.$XD.'"';
         }
         $email.= '>';
         return $email;
@@ -201,25 +164,15 @@ class Form {
      * @param array $other Otros atributos.<br>Other attributes.
      * @return string La etiqueta <input type="hidden" ...><br>The <input type="hidden" ...> tag.
      */
-    public static function hidden($name, $value = null, $required = false, array $other = null){
+    public static function hidden($name, $value = '', $required = false, array $other = array()){
         $hidden = '<input type="hidden" ';
         $hidden.= 'name="'.$name.'"';
-        if(is_null($value)){
-            $hidden.= '';
-        } else {
-            $hidden.= ' value="'.$value.'"';
-        }
-        if($required == false){
-            $hidden.= '';
-        } else {
+        $hidden.= ' value="'.$value.'"';
+        if($required){
             $hidden.= ' required="required"';
         }
-        if(is_null($other)){
-            $hidden.= '';
-        } else {
-            foreach($other as $attr => $XD){
-                $hidden.= ' '.$attr.'="'.$XD.'"';
-            }
+        foreach($other as $attr => $XD){
+            $hidden.= ' '.$attr.'="'.$XD.'"';
         }
         $hidden.= '>';
         return $hidden;
@@ -234,27 +187,17 @@ class Form {
      * @param array $other Otros atributos.<br>Other attributes.
      * @return string La etiqueta <textarea> y atributos.<br>The <textarea> tag and attributes.
      */
-    public static function text_area($name, $value = null, $required = false, array $other = null){
+    public static function text_area($name, $value = '', $required = false, array $other = array()){
         $text_area = '<textarea ';          
         $text_area.= 'name="'.$name.'"';
-        if($required == false){
-            $text_area.= '';
-        } else {
+        if($required){
             $text_area.= ' required="required"';
         }
-        if(is_null($other)){
-            $text_area.= '';
-        } else {
-            foreach($other as $attr => $XD){
-                $text_area.= ' '.$attr.'="'.$XD.'"';
-            }
+        foreach($other as $attr => $XD){
+            $text_area.= ' '.$attr.'="'.$XD.'"';
         }
-        $text_area.= '>';
-        if(is_null($value)){
-            $text_area.= '';
-        } else {
-            $text_area.= ''.$value.'';
-        }                
+        $text_area.= '>';        
+        $text_area.= ''.$value.'';
         $text_area.= '</textarea>';
         return $text_area;
     }
@@ -267,20 +210,14 @@ class Form {
      * @param array $other Otros atributos.<br>Other attributes.
      * @return string La etiqueta <input type="file" ...><br>The <input type="file" ...> tag.
      */
-    public static function file($name, $required = false, array $other = null){
+    public static function file($name, $required = false, array $other = array()){
         $text = '<input type="file" ';
         $text.= 'name="'.$name.'"';        
-        if($required == false){
-            $text.= '';
-        } else {
+        if($required){
             $text.= ' required="required"';
         }
-        if(is_null($other)){
-            $text.= '';
-        } else {
-            foreach($other as $attr => $XD){
-                $text.= ' '.$attr.'="'.$XD.'"';
-            }
+        foreach($other as $attr => $XD){
+            $text.= ' '.$attr.'="'.$XD.'"';
         }
         $text.= '>';
         return $text;
@@ -296,30 +233,18 @@ class Form {
      * @param array $other Otros atributos.<br>Other attributes.
      * @return string La etiqueta <input type="checkbox" ...><br>The <input type="checkbox" ...> tag.
      */
-    public static function checkbox($name, $value = null, $checked = false, $required = false, array $other = null){
+    public static function checkbox($name, $value = '', $checked = false, $required = false, array $other = array()){
         $checkbox = '<input type="checkbox" ';
         $checkbox.= 'name="'.$name.'"';
-        if(is_null($value)){
-            $checkbox.= '';
-        } else {
-            $checkbox.= ' value="'.$value.'"';
-        }
-        if(!$checked){
-            $checkbox.= '';
-        } else {
+        $checkbox.= ' value="'.$value.'"';
+        if($checked){
             $checkbox.= ' checked="checked"';
         }
-        if(!$required){
-            $checkbox.= '';
-        } else {
+        if($required){
             $checkbox.= ' required="required"';
         }
-        if(is_null($other)){
-            $checkbox.= '';
-        } else {
-            foreach($other as $attr => $XD){
-                $checkbox.= ' '.$attr.'="'.$XD.'"';
-            }
+        foreach($other as $attr => $XD){
+            $checkbox.= ' '.$attr.'="'.$XD.'"';
         }
         $checkbox.= '>';
         return $checkbox;
@@ -335,30 +260,18 @@ class Form {
      * @param array $other Otros atributos.<br>Other attributes.
      * @return string La etiqueta <input type="radio" ...><br>The <input type="radio" ...> tag.
      */
-    public static function radio($name, $value = null, $checked = false, $required = false, array $other = null){
+    public static function radio($name, $value = '', $checked = false, $required = false, array $other = array()){
         $radio = '<input type="radio" ';
         $radio.= 'name="'.$name.'"';
-        if(is_null($value)){
-            $radio.= '';
-        } else {
-            $radio.= ' value="'.$value.'"';
-        }
-        if($checked == false){
-            $radio.= '';
-        } else {
+        $radio.= ' value="'.$value.'"';
+        if($checked){
             $radio.= ' checked="checked"';
         }
-        if($required == false){
-            $radio.= '';
-        } else {
+        if($required){
             $radio.= ' required="required"';
         }
-        if(is_null($other)){
-            $radio.= '';
-        } else {
-            foreach($other as $attr => $XD){
-                $radio.= ' '.$attr.'="'.$XD.'"';
-            }
+        foreach($other as $attr => $XD){
+            $radio.= ' '.$attr.'="'.$XD.'"';
         }
         $radio.= '>';
         return $radio;
@@ -372,20 +285,12 @@ class Form {
      * @param array $other Otros atributos.<br>Other attributes.
      * @return string La etiqueta <input type="submit" ...><br>The <input type="submit" ...> tag.
      */
-    public static function submit($value, $name = null, array $other = null){
+    public static function submit($value, $name = '', array $other = array()){
         $submit = '<input type="submit" ';
         $submit.= 'value="'.$value.'"';
-        if(is_null($name)){
-            $submit.= '';
-        } else {
-            $submit.= ' name="'.$name.'"';
-        }
-        if(is_null($other)){
-            $submit.= '';
-        } else {
-            foreach($other as $attr => $XD){
-                $submit.= ' '.$attr.'="'.$XD.'"';
-            }
+        $submit.= ' name="'.$name.'"';        
+        foreach($other as $attr => $XD){
+            $submit.= ' '.$attr.'="'.$XD.'"';
         }
         $submit.= '>';
         return $submit;
@@ -399,20 +304,12 @@ class Form {
      * @param array $other Otros atributos.<br>Other attributes.
      * @return string La etiqueta <input type="button" ...><br>The <input type="button" ...> tag.
      */
-    public static function button($value, $name = null, array $other = null){
+    public static function button($value, $name = '', array $other = array()){
         $button = '<input type="button" ';
         $button.= 'value="'.$value.'"';
-        if(is_null($name)){
-            $button.= '';
-        } else {
-            $button.= ' name="'.$name.'"';
-        }
-        if(is_null($other)){
-            $button.= '';
-        } else {
-            foreach($other as $attr => $XD){
-                $button.= ' '.$attr.'="'.$XD.'"';
-            }
+        $button.= ' name="'.$name.'"';        
+        foreach($other as $attr => $XD){
+            $button.= ' '.$attr.'="'.$XD.'"';
         }
         $button.= '>';
         return $button;
@@ -428,25 +325,15 @@ class Form {
      * @param array $other Otros atributos.<br>Other attributes.
      * @return string La etiqueta <input type="****" ...><br>The <input type="****" ...> tag.
      */
-    public static function extra($type, $name, $value = null, $required = false, array $other = null){
+    public static function extra($type, $name, $value = '', $required = false, array $other = array()){
         $other_input = '<input type="'.$type.'" ';
         $other_input.= 'name="'.$name.'"';
-        if(is_null($value)){
-            $other_input.= '';
-        } else {
-            $other_input.= ' value="'.$value.'"';
-        }
-        if($required == false){
-            $other_input.= '';
-        } else {
+        $other_input.= ' value="'.$value.'"';
+        if($required){
             $other_input.= ' required="required"';
         }
-        if(is_null($other)){
-            $other_input.= '';
-        } else {
-            foreach($other as $attr => $XD){
-                $other_input.= ' '.$attr.'="'.$XD.'"';
-            }
+        foreach($other as $attr => $XD){
+            $other_input.= ' '.$attr.'="'.$XD.'"';
         }
         $other_input.= '>';
         return $other_input;
@@ -461,28 +348,18 @@ class Form {
      * @param array $other Otros atributos.<br>Other attributes.
      * @return string La etiqueta <select ...><option ...>...</option>...</select>.<br>The <select ...><option ...>...</option>...</select> tag.
      */
-    public static function select($name, array $options = null, $required = false, array $other = null){
+    public static function select($name, array $options = array(), $required = false, array $other = array()){
         $select = '<select name="'.$name.'"';
-        if($required == false){
-            $select.= '';
-        } else {
+        if($required){
             $select.= ' required="required"';
         }
-        if(is_null($other)){
-            $select.= '';
-        } else {
-            foreach($other as $attr => $XD){
-                $select.= ' '.$attr.'="'.$XD.'"';
-            }
+        foreach($other as $attr => $XD){
+            $select.= ' '.$attr.'="'.$XD.'"';
         }
         $select.= '>';
-        $select.= "\n";
-        if(is_null($options)){
-            $select.= '';
-        } else {
-            foreach($options as $val_option => $text_option){
-                $select.= '<option value="'.$val_option.'">'.$text_option.'</option>'."\n";
-            }
+        $select.= "\n";        
+        foreach($options as $val_option => $text_option){
+            $select.= '<option value="'.$val_option.'">'.$text_option.'</option>'."\n";
         }
         $select.= '</select>';
         return $select;
@@ -496,19 +373,13 @@ class Form {
      * @param array $other
      * @return string
      */
-    public static function select_open($name, $required = false, array $other = null){
+    public static function select_open($name, $required = false, array $other = array()){
         $select = '<select name="'.$name.'"';
-        if($required == false){
-            $select.= '';
-        } else {
+        if($required){
             $select.= ' required="required"';
         }
-        if(is_null($other)){
-            $select.= '';
-        } else {
-            foreach($other as $attr => $XD){
-                $select.= ' '.$attr.'="'.$XD.'"';
-            }
+        foreach($other as $attr => $XD){
+            $select.= ' '.$attr.'="'.$XD.'"';
         }
         $select.= '>';
         $select.= "\n";
@@ -543,7 +414,7 @@ class Form {
     
     /**
      * Devuelve uno o varios <optgroup> con sus etiquetas <option>. ¿Cómo usarlo? ejemplo:<br>
-     * Definimos un array:
+     * Defines un array:
      * <pre>
      * $data = [
             'group 1' => [               // 'label' del primer <optgroup>
@@ -557,7 +428,7 @@ class Form {
         ];
      * </pre><br>
      * Returns one or more <optgroup> with their <option> tags. How to use? example:<br>
-     * We define an array:
+     * You define an array:
      * <pre>
      * $data = [
             'group 1' => [               // 'label' of the first <optgroup> tag

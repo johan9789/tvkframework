@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0
+ * @version 1.0.1
  * 
  */
 
@@ -19,15 +19,13 @@
  */
 class Script {
 
-	public static function bit_ly($url){
-		$content = file_get_contents("http://api.bit.ly/v3/shorten?login=TUUSER&apiKey=TUAPIKEY&longUrl=".$url."&format=xml"); 
-    	$element = new SimpleXmlElement($content); 
-    	$bitly = $element->data->url; 
-    	if($bitly){ 
-	        return $bitly; 
-    	} else { 
-        	return '0'; 
-    	}
-	}
+    /**
+     *
+     */
+    public static function some($script){
+        echo '<script type="text/javascript">';
+        echo $script;
+        echo '</script>';
+    }
 
 }

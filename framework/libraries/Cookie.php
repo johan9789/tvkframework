@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0
+ * @version 1.0.1
  * 
  */
 
@@ -62,6 +62,16 @@ class Cookie {
     public static function delete($name){
         $expire = time() - 3600;
         setcookie($name, '', $expire);
+    }
+    
+    /**
+     * 
+     * @param type $value
+     * @return type
+     * @since 1.0.1
+     */
+    public static function has($value){
+        return(isset($_COOKIE[$value]));
     }
     
 }

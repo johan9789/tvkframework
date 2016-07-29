@@ -2,25 +2,24 @@
 class ViewX {
     
     public function gen_metro_bootstrap(){
-        if(!file_exists('../../assets/css/metro-bootstrap-gen.css')){
-            $metro = fopen('metro-bootstrap-gen.css', 'r');
+        if(!file_exists('../assets/css/metro-bootstrap-gen.css')){
+            $metro = fopen('assets/css/metro-bootstrap-gen.css', 'r');
             $gen_metro = '';
             while(!feof($metro)){
                 $traer = fgets($metro);
-                // $salto_linea = nl2br($traer);
-                $gen_metro = $salto_linea;
+                $gen_metro = $traer;
             }
             fclose($metro);
-            $gen = fopen('../../assets/css/metro-bootstrap-gen.css', 'a');
+            $gen = fopen('../assets/css/metro-bootstrap-gen.css', 'a');
             fwrite($gen, $gen_metro);
             fclose($gen);
         }
     }
     
     public function index_active_record($name_crud, $table_crud, $mayus_table_crud, $fields_table, $pk_table){
-        @mkdir("../../app/views/$name_crud");
-        $fv = fopen("../../app/views/$name_crud/index.php", 'a');
-        if(!file_exists('../../app/views/layouts/header.php')){
+        @mkdir("../app/views/$name_crud");
+        $fv = fopen("../app/views/$name_crud/index.php", 'a');
+        if(!file_exists('../app/views/layouts/header.php')){
             fwrite($fv, "<!DOCTYPE html>"."\n");
             fwrite($fv, '<html>'."\n");
             fwrite($fv, '<head>'."\n");
@@ -73,8 +72,9 @@ class ViewX {
         }
         fwrite($fv, '    </tr>'."\n");
         fwrite($fv, '    <?php endforeach; ?>'."\n");
-        fwrite($fv, '</table>'."\n\n");
-        if(!file_exists('../../app/views/layouts/header.php')){
+        fwrite($fv, '</table>');
+        if(!file_exists('../app/views/layouts/header.php') || !file_exists('../app/views/layouts/footer.php')){
+            fwrite($fv, "\n\n");
             fwrite($fv, '</body>'."\n");
             fwrite($fv, '</html>');
         }
@@ -82,8 +82,8 @@ class ViewX {
     }
     
     public function edit_active_record($name_crud, $table_crud, $mayus_table_crud, $fields_table, $pk_table){
-        $fv = fopen("../../app/views/$name_crud/edit.php", 'a');
-        if(!file_exists('../../app/views/layouts/header.php')){
+        $fv = fopen("../app/views/$name_crud/edit.php", 'a');
+        if(!file_exists('../app/views/layouts/header.php')){
             fwrite($fv, "<!DOCTYPE html>"."\n");
             fwrite($fv, '<html>'."\n");
             fwrite($fv, '<head>'."\n");
@@ -139,8 +139,9 @@ class ViewX {
         }
         fwrite($fv, '    </tr>'."\n");
         fwrite($fv, '    <?php endforeach; ?>'."\n");
-        fwrite($fv, '</table>'."\n\n");
-        if(!file_exists('../../app/views/layouts/header.php')){
+        fwrite($fv, '</table>');
+        if(!file_exists('../app/views/layouts/header.php') || !file_exists('../app/views/layouts/footer.php')){
+            fwrite($fv, "\n\n");
             fwrite($fv, '</body>'."\n");
             fwrite($fv, '</html>');
         }

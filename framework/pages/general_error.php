@@ -9,19 +9,19 @@
 </style>
 <script>
 function muestra_oculta(id){
-	if(document.getElementById){ // se obtiene el id
-		var el = document.getElementById(id); // se define la variable "el" igual a nuestro div
-		el.style.display = (el.style.display == 'none') ? 'block' : 'none'; // damos un atributo display:none que oculta el div
-	}
+    if(document.getElementById){ // se obtiene el id
+        var el = document.getElementById(id); // se define la variable "el" igual a nuestro div
+        el.style.display = (el.style.display == 'none') ? 'block' : 'none'; // damos un atributo display:none que oculta el div
+    }
 }
 window.onload = function(){ /* hace que se cargue la función lo que predetermina que div estará oculto hasta llamar a la función nuevamente */
-	muestra_oculta('hide'); /* "contenido_a_mostrar" es el nombre de la etiqueta DIV que deseamos mostrar */
+    muestra_oculta('hide'); /* "contenido_a_mostrar" es el nombre de la etiqueta DIV que deseamos mostrar */
 }
 </script>
 <style type="text/css">
 #var_act:hover {
-	color: black;		
-	cursor: pointer;
+    color: black;		
+    cursor: pointer;
 } 
 </style>
 </head>
@@ -30,7 +30,7 @@ window.onload = function(){ /* hace que se cargue la función lo que predetermin
 <div class="navbar navbar-default navbar-static-top bsnavbar" style="background-color: red;">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#"><h1>TvK Framework 1.0</h1></a>
+            <a class="navbar-brand" href="#"><h1>TvK Framework 1.0.1</h1></a>
         </div>
         <div class="collapse navbar-collapse"></div>
     </div>

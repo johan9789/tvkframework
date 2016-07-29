@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0
+ * @version 1.0.1
  * 
  */
 
@@ -25,7 +25,6 @@
  * @param string $url Agregar controlador, métodos y parámetros a la url, ej: http://www.mipagina.com/controlador/metodo/params <br>Add controller, methods and params to url, ex: http://www.mipage.com/controller/method/params
  * @return string URL.
  */
-/*
 function base_url($url = ''){
     return URL.$url;
 }
@@ -36,7 +35,6 @@ function base_url($url = ''){
  * @param string $asset Tu css, js, img... a cargar.<br>Your css, js, img... to load.
  * @return string URL de assets.<br>Assets URL.
  */
-/*
 function assets_url($asset = ''){
     return URL.ASSETS.$asset;
 }
@@ -48,41 +46,8 @@ function assets_url($asset = ''){
  * @param mixed $other Segunda variable a comparar.<br>Second var to compare.
  * @return boolean Devuelve <b>true</b> si ambas son iguales o <b>false</b> si son diferentes.<br>Returns <b>true</b> if both are equals or <b>false</b> if are different.
  */
-/*
 function equals($var, $other){
     return($var == $other);
-}
-
-/**
- * Comprueba si el formulario está siendo enviado por el método POST.<br><br>
- * Checks if the form is being send by POST method.
- * @param string $message Mensaje de error.<br>Error message.
- * @param boolean $redirect Si se desea redireccionar a la página principal poner 'true'.<br>If you should redirect to main page, write true.
- */
-/*
-function not_post_method($message = 'Error', $redirect = false){
-    if($_SERVER['REQUEST_METHOD'] != 'POST'){
-        if($redirect){
-            Redirect::to();
-        }
-        exit($message);
-    }
-}
-
-/**
- * Comprueba si el formulario está siendo enviado por el método GET.<br><br>
- * Checks if the form is being send by GET method.
- * @param string $message Mensaje de error.<br>Error message.
- * @param boolean $redirect Si se desea redireccionar a la página principal poner 'true'.<br>If you should redirect to main page, write true.
- */
-/*
-function not_get_method($message = 'Error', $redirect = false){
-    if($_SERVER['REQUEST_METHOD'] != 'GET'){
-        if($redirect){
-            Redirect::to();
-        }
-        exit($message);
-    }
 }
 
 /**
@@ -90,7 +55,6 @@ function not_get_method($message = 'Error', $redirect = false){
  * Replaces special characters in a word.
  * @param string $word Palabra a evaluar.<br>Word to evaluate.
  */
-/*
 function replace_special_chars($word){
     $find = ['á', 'é', 'í', 'ó', 'ú', 'ñ'];
     $repl = ['a', 'e', 'i', 'o', 'u', 'n'];
@@ -103,8 +67,6 @@ function replace_special_chars($word){
  * So, write...
  * @param mixed $something Solamente escribe algo...<br>Only write something...
  */
-/*
 function write($something){
     echo $something;
 }
-*/

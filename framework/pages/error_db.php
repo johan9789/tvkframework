@@ -12,7 +12,7 @@
 <div class="navbar navbar-default navbar-static-top bsnavbar" style="background-color: red;">
     <div class="container">
         <div class="navbar-header">
-            <?php echo HTML::link('', "<h1>TvK Framework 1.0</h1>", ['class' => 'navbar-brand']); ?>
+            <?php echo HTML::link('', "<h1>TvK Framework 1.0.1</h1>", ['class' => 'navbar-brand']); ?>
         </div>
         <div class="collapse navbar-collapse"></div>
     </div>
@@ -34,7 +34,8 @@
                 <h4>&nbsp;&nbsp;&nbsp;Detalles:</h4>
                 <?php $i=1; ?>                
                 <?php foreach($details as $detail): ?>
-                <h5>&nbsp;&nbsp;&nbsp;<?php echo $i; ?>) Archivo: <?php echo $detail['file']; ?></h5>
+                <?php $file = str_replace('\\', '/', $detail['file']); ?>
+                <h5>&nbsp;&nbsp;&nbsp;<?php echo $i; ?>) Archivo: <a target="_blank" href="file:///<?php echo $file; ?>");><?php echo $detail['file']; ?></a></h5>
                 <h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Línea: <?php echo $detail['line']; ?></h5>
                 <h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Método: <?php echo $detail['function']; ?></h5>
                 <h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Clase: <?php echo $detail['class']; ?></h5>

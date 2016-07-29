@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0
+ * @version 1.0.1
  * 
  */
 
@@ -66,7 +66,7 @@ class View {
      * @param string $name El nombre del archivo a cargar.<br>The file name to load.
      * @param array $data Variables a incluir en la vista.<br>Variables to include in the view.
      */
-    public function render_x($name, array $data = array()){
+    public static function render_x($name, array $data = array()){
         if(!is_null($data)){
             extract($data);
         }
@@ -101,10 +101,10 @@ class View {
             extract($data);
         }
         if(file_exists('app/views/'.$name.'.php')){
-            echo View::return_view('test2');
-            // $content = file_get_contents('app/views/'.$name.'.php');
-            /* $content = require_once 'app/views/'.$name.'.php';            
-            require 'app/views/layouts/main.php';  */
+            //echo View::return_view('test2');
+            $content = file_get_contents('app/views/'.$name.'.php');
+            // $content = require_once 'app/views/'.$name.'.php';            
+            require 'app/views/layouts/main.php';
         } else {
             require_once 'app/errors/error.php';
             $error = new Error();

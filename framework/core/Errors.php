@@ -11,7 +11,7 @@ function fatal_handler(){
         $error = $error["message"].' ';
         require_once 'framework/pages/general_error.php';
         exit();
-    }    
+    }        
 }
 
 /** Capturando errores (beta) */

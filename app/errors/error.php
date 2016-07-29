@@ -26,7 +26,6 @@ class Error extends ErrorManager {
         $title = 'Error insólito :D';
         $error = 'Aún no has creado el método index en tu controlador.';
         $this->render('error_x', compact('title', 'error'));
-        exit();
     }
 
     /**
@@ -37,7 +36,6 @@ class Error extends ErrorManager {
         $title = 'Error en la vista :D';
         $error = "La vista '$name' no existe.";
         $this->render('error_x', compact('title', 'error'));
-        exit();
     }
     
     /**
@@ -48,7 +46,6 @@ class Error extends ErrorManager {
      */
     public function other_error($title, $error){
         $this->render('error_x', compact('title', 'error'));
-        exit();
     }
 
     public function general_error(){}

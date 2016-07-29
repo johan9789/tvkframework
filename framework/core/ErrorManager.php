@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0
+ * @version 1.0.1
  * 
  */
 
@@ -30,12 +30,13 @@ class ErrorManager {
         if(!is_null($data)){
             extract($data);
         }
-        $error_page = 'framework/pages/'.$error_view.'.php';
+        $error_page = SYSTEM.'pages/'.$error_view.'.php';
         if(file_exists($error_page)){
             require $error_page;
         } else {
-            require realpath('../../').'/'.$error_page;
+            require realpath('../').'/'.$error_page;
         }
+        exit();
     }
     
 }

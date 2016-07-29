@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0
+ * @version 1.0.1
  * 
  */
 
@@ -92,6 +92,16 @@ class Session {
     public static function destroy(){
         @session_start();
         session_destroy();
+    }
+    
+    /**
+     * 
+     * @param type $value
+     * @return type
+     * @since 1.0.1
+     */
+    public function has($value){
+        return(isset($_SESSION[SESSION_KEY.$value]));
     }
         
 }

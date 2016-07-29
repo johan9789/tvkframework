@@ -10,13 +10,13 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0
+ * @version 1.0.1
  * 
  */
 
 /**
- * Funciones útiles para la aplicación.
- * Util functions to app.
+ * Funciones útiles para la aplicación y más...
+ * Util functions to app and more...
  */
 class App {	
 
@@ -54,26 +54,16 @@ class App {
     }
 
     /**
-     * Compara si 2 variables son iguales.<br><br>
-     * Compares if 2 var are equals.
-     * @param mixed $var Primera variable a comparar.<br>First var to compare.
-     * @param mixed $other Segunda variable a comparar.<br>Second var to compare.
-     * @return boolean Devuelve <b>true</b> si ambas son iguales o <b>false</b> si son diferentes.<br>Returns <b>true</b> if both are equals or <b>false</b> if are different.
-     */
-    public static function equals($var, $other){
-        return($var == $other);
-    }
-
-    /**
      * Comprueba si el formulario está siendo enviado por el método POST.<br><br>
      * Checks if the form is being send by POST method.
      * @param string $message Mensaje de error.<br>Error message.
      * @param boolean $redirect Si se desea redireccionar a la página principal poner 'true'.<br>If you should redirect to main page, write true.
      */
-    public static function not_post($message = 'Error', $redirect = false){
+    public static function not_post($message = 'Error', $redirect = false, $url = ''){
         if($_SERVER['REQUEST_METHOD'] != 'POST'){
             if($redirect){
-                Redirect::to();
+                echo $message;
+                Redirect::to($url);
             }
             exit($message);
         }
@@ -85,34 +75,14 @@ class App {
      * @param string $message Mensaje de error.<br>Error message.
      * @param boolean $redirect Si se desea redireccionar a la página principal poner 'true'.<br>If you should redirect to main page, write true.
      */
-    public static function not_get($message = 'Error', $redirect = false){
+    public static function not_get($message = 'Error', $redirect = false, $url = ''){
         if($_SERVER['REQUEST_METHOD'] != 'GET'){
             if($redirect){
-                Redirect::to();
+                echo $message;
+                Redirect::to($url);
             }
             exit($message);
         }
-    }
-
-    /**
-     * Reemplaza carácteres especiales en una palabra.<br><br>
-     * Replaces special characters in a word.
-     * @param string $word Palabra a evaluar.<br>Word to evaluate.
-     */
-    public static function replace_special_chars($word){
-        $find = ['á', 'é', 'í', 'ó', 'ú', 'ñ'];
-        $repl = ['a', 'e', 'i', 'o', 'u', 'n'];
-        $final_word = str_replace($find, $repl, $word);
-        return $final_word;
-    }
-
-    /**
-     * Pues, escribe...<br><br>
-     * So, write...
-     * @param mixed $something Solamente escribe algo...<br>Only write something...
-     */
-    public static function write($something){
-        echo $something;
     }
 
 }

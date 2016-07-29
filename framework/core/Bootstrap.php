@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0
+ * @version 1.0.1
  * 
  */
 
@@ -65,8 +65,11 @@ class Bootstrap {
      */
     private function _load_default_controller(){
         require $this->_controller_path.$this->_default_file;
-        $def = explode('.', ucfirst($this->_default_file));
+        $def = explode('.', ucfirst($this->_default_file));        
         $this->_controller = new $def[0];
+        if(!$this->_controller instanceof MainController){
+            exit("No has heredado la clase MainController");
+        }
         if(!method_exists($this->_controller, 'index')){
             $this->_method_index_not_exists();
         }
@@ -103,9 +106,13 @@ class Bootstrap {
     private function _call_controller_method(){
         $length = count($this->_url);
         if($length > 1){
-            // Se asegura de que el método que estamos llamando existe.
-            // Make sure the method we're calling exists.
+            // Se asegura de que el método que estamos llamando existe y no es privado ni protegido.
+            // Make sure the method we're calling exists and it isn't private or protected.
             if(!method_exists($this->_controller, $this->_url[1])){
+                $this->_error();
+            }
+            $method = new ReflectionMethod($this->_controller, $this->_url[1]);
+            if($method->isPrivate() || $method->isProtected()){
                 $this->_error();
             }
         }

@@ -10,96 +10,69 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0
+ * @version 1.0.1
  * 
  */
 
 /**
- * Realiza la conexión a las bases de datos relacionales.<br><br>
- * Realizes the connection to relational databases
+ * Realiza consultas a las bases de datos relacionales.<br><br>
+ * Realizes queries to relational databases.
  */
-class Relational extends PDO {    
+class Relational {    
+    private $pdo;
+    private $connection;    
     
     /**
      * Constructor que realiza la conexión.<br><br>
      * Constructor realizes the connection
      */
     public function __construct(){
-        try {
-            switch(DEFAULT_SQL){
-                case 'mysql':
-                    parent::__construct(MYSQL_DRIVER.':host='.MYSQL_HOST.';dbname='.MYSQL_DATABASE.';port='.MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD);
-                    break;
-                case 'oci':
-                    parent::__construct(ORCL_DRIVER.':dbname='.ORCL_DATABASE.';host='.ORCL_HOST, ORCL_USER, ORCL_PASSWORD);
-                    break;
-                case 'pgsql':
-                    parent::__construct(PGSQL_DRIVER.':dbname='.PGSQL_DATABASE.';host='.PGSQL_HOST.';port='.PGSQL_PORT.';charset=utf8', PGSQL_USER, PGSQL_PASSWORD);
-                    break;
-                case 'pgsql':
-                    parent::__construct(SQLSRV_DRIVER.':server=['.SQLSRV_SERVER.'];Database=['.SQLSRV_DATABASE.']', '['.SQLSRV_USER.']', '['.SQLSRV_PASSWORD.']');
-                    break;
-                default:
-                    $error_db = 'app/errors/error_db.php';                    
-                    require_once $error_db;
-                    $error = new Error_DB();
-                    $error->connection('El gestor de base de datos no se encuentra disponible', '', '');
-                    break;
-            }
-            $this->exec("set names utf8");
-        } catch(PDOException $e){
-            $error_db = 'app/errors/error_db.php';
-            if(file_exists($error_db)){
-                require_once $error_db;
-                $error = new Error_DB();
-                $error->connection($e->getMessage(), $e->getFile(), $e->getTrace());
-            } else {
-                require_once realpath('../../').'/'.$error_db;
-                $error = new Error_DB();
-                $error->connection($e->getMessage(), $e->getFile(), $e->getTrace());
-            }
-        }
+        $this->pdo = new SQLConnection();
+        $this->connection = $this->pdo->connection();
     }
     
-    public function start(){
+    /**
+     * Devuelve la instancia de la clase.<br><br>
+     * Returns the instance of the class.
+     * @return \Relational
+     */
+    public static function start(){
         return new Relational();
     }
     
     /**
-     * 
+     * Realiza una consulta y devuelve los resultados.<br><br>
+     * Realizes a query and returns the results.
      * @param type $sql
      * @param array $array
      * @return type
      */
-    public function query($sql, array $array = array()){
+    public function query($sql, array $data = array()){
         try {
-            $sth = $this->prepare($sql);
-            foreach($array as $key => $value){
+            $sth = $this->connection->prepare($sql);
+            foreach($data as $key => $value){
                 $sth->bindValue(":$key", $value);
             }
             $sth->execute();
         } catch(PDOException $e){
-            require_once 'app/errors/error_db.php';
-            $error = new Error_DB();
-            $error->query($e->getMessage(), $e->getFile(), $e->getTrace());
+            $this->pdo->exception($e);
         }
         return $sth->fetchAll(FETCH_SQL);
     }
     
     /**
-     * 
+     * Cuenta los resultados de una consulta.<br><br>
+     * Counts results of query. 
      * @param type $sql
      * @param array $data
      * @return type
      */
     public function query_row_count($sql, array $data = array()){
         try {
-            $sth = $this->prepare($sql);
+            $sth = $this->connection->prepare($sql);
             $sth->execute($data);
         } catch(PDOException $e){
-            require_once 'app/errors/error_db.php';
-            $error = new Error_DB();
-            $error->query($e->getMessage(), $e->getFile(), $e->getTrace());
+            $this->pdo->exception($e);
         }
         return $sth->rowCount();
     }
@@ -109,14 +82,12 @@ class Relational extends PDO {
      * @param type $sql
      * @param array $data
      */
-    public function statement($sql, array $data){
+    public function statement($sql, array $data = array()){
         try {
-            $sth = $this->prepare($sql);
+            $sth = $this->connection->prepare($sql);
             $sth->execute($data);
         } catch(PDOException $e){
-            require_once 'app/errors/error_db.php';
-            $error = new Error_DB();
-            $error->query($e->getMessage(), $e->getFile(), $e->getTrace());
+            $this->pdo->exception($e);
         }
     }
 
@@ -129,12 +100,10 @@ class Relational extends PDO {
      */
     public function select($fields, $table){
         try {
-            $sth = $this->prepare("select $fields from $table");
+            $sth = $this->connection->prepare("select $fields from $table");
             $sth->execute();
         } catch(PDOException $e){
-            require_once 'app/errors/error_db.php';
-            $error = new Error_DB();
-            $error->query($e->getMessage(), $e->getFile(), $e->getTrace());
+            $this->pdo->exception($e);
         }
         return $sth->fetchAll(FETCH_SQL);
     }
@@ -146,20 +115,18 @@ class Relational extends PDO {
      * @param type $where
      * @return type
      */
-    public function select_where($select, $table, $where){
+    public function select_where($select, $table, array $where){
+        $wk = '';
+        $wv = '';
+        foreach($where as $kw => $vw){
+            $wk = $kw;
+            $wv = $vw;
+        }
         try {
-            $wk = '';
-            $wv = '';
-            foreach($where as $kw => $vw){
-                $wk = $kw;
-                $wv = $vw;
-            }
-            $sth = $this->prepare("select $select from $table where $wk = '$wv'");
-            $sth->execute();
+            $sth = $this->connection->prepare("select $select from $table where $wk = ?");
+            $sth->execute(array($wv));
         } catch(PDOException $e){
-            require_once 'app/errors/error_db.php';
-            $error = new Error_DB();
-            $error->query($e->getMessage(), $e->getFile(), $e->getTrace());
+            $this->pdo->exception($e);
         }
         return $sth->fetchAll(FETCH_SQL);
     }
@@ -171,19 +138,17 @@ class Relational extends PDO {
      * @return type
      */
     public function where($table, array $where){
+        $wk = '';
+        $wv = '';
+        foreach($where as $kw => $vw){
+            $wk = $kw;
+            $wv = $vw;
+        }
         try {
-            $wk = '';
-            $wv = '';
-            foreach($where as $kw => $vw){
-                $wk = $kw;
-                $wv = $vw;
-            }
-            $sth = $this->prepare("select * from $table where $wk = '$wv'");
-            $sth->execute();
+            $sth = $this->connection->prepare("select * from $table where $wk = '$wv'");
+            $sth->execute();            
         } catch(PDOException $e){
-            require_once 'app/errors/error_db.php';
-            $error = new Error_DB();
-            $error->query($e->getMessage(), $e->getFile(), $e->getTrace());
+            $this->pdo->exception($e);
         }
         return $sth->fetchAll(FETCH_SQL);
     }        
@@ -195,13 +160,11 @@ class Relational extends PDO {
      */
     public function table($name){
         try {
-            $sth = $this->prepare("select * from $name");
+            $sth = $this->connection->prepare("select * from $name");
             $sth->execute();            
         } catch(PDOException $e){
-            require_once 'app/errors/error_db.php';
-            $error = new Error_DB();
-            $error->query($e->getMessage(), $e->getFile(), $e->getTrace());
-        }
+            $this->pdo->exception($e);
+        }        
         return $sth->fetchAll(FETCH_SQL);
     }
     
@@ -211,19 +174,17 @@ class Relational extends PDO {
      * @param array $data
      */
     public function insert($table, array $data){
-        try {
-            ksort($data);        
-            $fieldNames = implode(', ', array_keys($data));
-            $fieldValues = ':'.implode(', :', array_keys($data));        
-            $sth = $this->prepare("insert into $table($fieldNames) values($fieldValues)");       
+        ksort($data);        
+        $fieldNames = implode(', ', array_keys($data));
+        $fieldValues = ':'.implode(', :', array_keys($data));
+        try {                   
+            $sth = $this->connection->prepare("insert into $table($fieldNames) values($fieldValues)");       
             foreach($data as $key => $value){
                 $sth->bindValue($key, $value);
             }        
             $sth->execute();
         } catch(PDOException $e){
-            require_once 'app/errors/error_db.php';
-            $error = new Error_DB();
-            $error->query($e->getMessage(), $e->getFile(), $e->getTrace());
+            $this->pdo->exception($e);
         }
     }
         
@@ -234,31 +195,29 @@ class Relational extends PDO {
      * @param array $where
      */
     public function update($table, array $data, array $where){
+        ksort($data);
+        /* */
+        $fieldDetails = NULL;
+        foreach($data as $key => $value){
+            $fieldDetails.= "`$key`=:$key,";
+        }        
+        $fieldDetails = rtrim($fieldDetails, ',');                
+        /* */
+        $wk = '';
+        $wv = '';
+        foreach($where as $kw => $vw){
+            $wk = $kw;
+            $wv = $vw;
+        }
+        /* */
         try {
-            ksort($data);
-            /* */
-            $fieldDetails = NULL;
-            foreach($data as $key => $value){
-                $fieldDetails.= "`$key`=:$key,";
-            }        
-            $fieldDetails = rtrim($fieldDetails, ',');                
-            /* */
-            $wk = '';
-            $wv = '';
-            foreach($where as $kw => $vw){
-                $wk = $kw;
-                $wv = $vw;
-            }
-            /* */
-            $sth = $this->prepare("UPDATE $table set $fieldDetails where $wk = '$wv'");
+            $sth = $this->connection->prepare("UPDATE $table set $fieldDetails where $wk = '$wv'");
             foreach($data as $key => $value){
                 $sth->bindValue(":$key", $value);
             }        
             $sth->execute();
         } catch(PDOException $e){
-            require_once 'app/errors/error_db.php';
-            $error = new Error_DB();
-            $error->query($e->getMessage(), $e->getFile(), $e->getTrace());
+            $this->pdo->exception($e);
         }
     }
     
@@ -271,24 +230,13 @@ class Relational extends PDO {
     public function delete($table, array $where, $limit = 1){
         try {
             foreach($where as $key => $value){
-                $sth = $this->prepare("delete from $table where :$key = $key limit $limit ");
+                $sth = $this->connection->prepare("delete from $table where :$key = $key limit $limit ");
                 $sth->bindValue($key, $value);
                 $sth->execute();
             }
         } catch(PDOException $e){
-            require_once 'app/errors/error_db.php';
-            $error = new Error_DB();
-            $error->query($e->getMessage(), $e->getFile(), $e->getTrace());
+            $this->pdo->exception($e);
         }
-    }
-    
-    /**
-     * 
-     * @param type $statement
-     * @return type
-     */
-    public function old_query($statement){
-        return parent::query($statement);
     }
     
     /**
@@ -298,7 +246,7 @@ class Relational extends PDO {
      */
     public function primary_key($table){
         try {
-            $sth = $this->prepare("SHOW INDEX FROM $table WHERE Key_name = 'PRIMARY'");
+            $sth = $this->connection->prepare("SHOW INDEX FROM $table WHERE Key_name = 'PRIMARY'");
             $sth->execute();
             $key = $sth->fetch();
             $ret = "";
@@ -308,9 +256,7 @@ class Relational extends PDO {
                 $ret = "";
             }
         } catch(PDOException $e){
-            require_once 'app/errors/error_db.php';
-            $error = new Error_DB();
-            $error->query($e->getMessage(), $e->getFile(), $e->getTrace());
+            $this->pdo->exception($e);
         }
         return $ret;
     }
@@ -322,16 +268,14 @@ class Relational extends PDO {
      */
     public function fields($table){
         try {
-            $sth = $this->prepare("select * from $table");
+            $sth = $this->connection->prepare("select * from $table");
             $sth->execute();
             for($i=0;$i<$sth->columnCount();$i++){
                 $col = $sth->getColumnMeta($i);
                 $columns[] = $col['name'];
             }
         } catch(PDOException $e){
-            require_once 'app/errors/error_db.php';
-            $error = new Error_DB();
-            $error->query($e->getMessage(), $e->getFile(), $e->getTrace());
+            $this->pdo->exception($e);
         }
         return $columns;
     }

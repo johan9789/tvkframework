@@ -6,15 +6,21 @@
 class Home extends MainController {
     
     /**
+     * Constructor para cargar la clase modelo de ejemplo.
+     * Constructor to load the sample model class.
+     */
+    public function __construct(){
+        $this->load('example');
+    }
+
+    /**
      * Método index de ejemplo.
      * Example index method.
      */
     public function index(){
-        $this->load('example');
         $title = 'Bienvenido :D';
-        $example = new Example();        
-        $lang = $example->lang();
-        $file = $example->get_file();
+        $lang = Example::lang();
+        $file = Example::get_file();
         View::template('home', compact('title', 'lang', 'file'));
     }
     

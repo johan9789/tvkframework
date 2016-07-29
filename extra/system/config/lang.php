@@ -16,8 +16,7 @@
 $xlang = array();
 $xlang['welcome'] = ($adm_auth['lang'] == 'es') ? 'Bienvenido a la sección extra del framework, '
         .'en el menú puedes ver que hay generadores de crud, controladores y más :) Úsalo según creas '
-        .'conveniente y necesario.' : 'Welcome to extra section from framework, in the menu you can see there are crud '
-        .'generator, controllers generator and more :) Use it if you considere necesary.';
+        .'conveniente y necesario.' : 'Welcome to the extra section of the framework, in the menu you can see there are crud generators, controllers and more :) Use it as appropriate and necessary to believe.';
 $xlang['version'] = 'TvK Framework 1.0';
 $xlang['created_by'] = ($adm_auth['lang'] == 'es') ? 'Creado por' : 'Created by';
 $xlang['iniciar_sesion'] = ($adm_auth['lang'] == 'es') ? 'Iniciar sesión' : 'Login';
@@ -26,6 +25,7 @@ $xlang['contrasena'] = ($adm_auth['lang'] == 'es') ? 'Contraseña' : 'Password';
 $xlang['seccion_extra'] = ($adm_auth['lang'] == 'es') ? 'Sección extra' : 'Extra section';
 $xlang['titulo_principal'] = $xlang['seccion_extra'].' - TvK Framework 1.0';
 $xlang['ingresar'] = ($adm_auth['lang'] == 'es') ? 'Ingresar' : 'Sign in';
+$xlang['salir'] = ($adm_auth['lang'] == 'es') ? 'Salir' : 'Exit';
 
 $xlang['inicio'] = ($adm_auth['lang'] == 'es') ? 'Inicio' : 'Home';
 $xlang['controladores'] = ($adm_auth['lang'] == 'es') ? 'Controladores' : 'Controllers';
@@ -41,7 +41,8 @@ $xlang['nombre_crud'] = ($adm_auth['lang'] == 'es') ? 'Nombre del C.R.U.D' : 'C.
 $xlang['crear_crud'] = ($adm_auth['lang'] == 'es') ? 'Crear C.R.U.D' : 'Create C.R.U.D.';
 $xlang['escribe_nombre'] = ($adm_auth['lang'] == 'es') ? 'Escribe un nombre' : 'Write a name';
 $xlang['crud_act_rec'] = ($adm_auth['lang'] == 'es') ? 'CRUD con Active Record' : 'CRUD with Active Record';
-$xlang['crud_rel'] = ($adm_auth['lang'] == 'es') ? "CRUD con clase 'Relational'" : "CRUD with 'Relational' class";
+$xlang['crud_rel_st'] = ($adm_auth['lang'] == 'es') ? "CRUD con clase 'Relational' (modo 'estático')" : "CRUD with 'Relational' class (static mode)";
+$xlang['crud_rel_inh'] = ($adm_auth['lang'] == 'es') ? "CRUD con clase 'Relational' (modo 'heredado')" : "CRUD with 'Relational' class (inherited mode)";
 $xlang['selecciona_tabla'] = ($adm_auth['lang'] == 'es') ? 'Selecciona una tabla de la base de datos.' : 'Select a table from the database.';
 $xlang['crud_igual_tabla'] = ($adm_auth['lang'] == 'es') ? 'El C.R.U.D no debe llamarse igual a la tabla.' : 'The C.R.U.D. must not have the same table name.';
 $xlang['crud_ya_existe'] = ($adm_auth['lang'] == 'es') ? 'El C.R.U.D./Controlador ya existe.' : 'The C.R.U.D./Controller already exists.';
@@ -65,3 +66,5 @@ $xlang['type_form'] = ($adm_auth['lang'] == 'es') ?
     ['Formulario HTML5', 'Formulario clásico', 'Formulario TvK HTML5', 'Formulario TvK'] : 
     ['HTML5 form', 'Classic form', 'HTML5 TvK Form', 'TvK Form'];
 $xlang['optional'] = ($adm_auth['lang'] == 'es') ? '(opcional) separar con comas (, )' : '(optional) separate with commas (, )';
+$xlang['ver_form_gen'] = ($adm_auth['lang'] == 'es') ? 'Ver último formulario generado' : 'See last generated form';
+$xlang['ver_form_info'] = ($adm_auth['lang'] == 'es') ? 'Tu último formulario generado está en' : 'Your last generated form is in';

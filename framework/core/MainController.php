@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0
+ * @version 1.0.1
  * 
  */
 
@@ -36,5 +36,21 @@ class MainController {
             $error->other_error('Error :D', "La clase '$name' no existe.");
         }
     }
+
+    /**
+     *
+     * @since 1.0.1
+     */
+    public function render($view, $data = array()){
+        View::render($view, $data);
+    }
     
+    /**
+     *
+     * @since 1.0.1
+     */
+    public function template($view, $data = array()){
+        View::template($view, $data);
+    }
+
 }

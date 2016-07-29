@@ -10,13 +10,13 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0
+ * @version 1.0.1
  * 
  */
 
 /**
- * Esta clase crea una colección 'clave' - 'valor', es otro 'array' orientado a objetos.<br><br>
- * This class creates an collection 'key' - 'value', is another 'array' object-oriented.
+ * Esta clase crea una colección 'clave' -> 'valor', es otro 'array' orientado a objetos.<br><br>
+ * This class creates an collection 'key' -> 'value', is another 'array' object-oriented.
  */
 class HashMap {
     /**

@@ -10,7 +10,7 @@ class Example {
      * List of available languages ​​in the presentation of the framework.
      * @return array
      */
-    public function lang(){
+    public static function lang(){
         $lang['ES'] = 'ES'; // Español
         $lang['EN'] = 'EN'; // Inglés
         $lang['DE'] = 'DE'; // Alemán
@@ -27,7 +27,7 @@ class Example {
      * :D
      * @return string :D
      */
-    public function get_file(){
+    public static function get_file(){
         $file = File::open('app/controllers/home.php');
         return $file;
     }

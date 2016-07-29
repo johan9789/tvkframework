@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0
+ * @version 1.0.1
  * 
  */
 
@@ -18,12 +18,14 @@
  * Clase creada para poder usar la base de datos NoSQL MongoDB.<br><br>
  * Created class for can use the NoSQL database MongoDB.
  */
-class Document extends MongoClient {
+class Document {
+    private $mongo;
+    private $connection;
     /**
      * Variable que contiene la base de datos.<br><br>
      * This var contains the database.
      * @var object|mixed 
-     */
+     */    
     private $database;
 
     /**
@@ -31,15 +33,13 @@ class Document extends MongoClient {
      * Realizes the connection to MongoDB server and chooses the database.
      */
     public function __construct(){
-        try {
-            $con = sprintf('mongodb://%s:%d', MONGO_HOST, MONGO_PORT);
-            parent::__construct($con);
-        } catch(MongoConnectionException $e){
-            require_once 'app/errors/error_db.php';
-            $error = new Error_DB();
-            $error->no_sql($e->getMessage(), $e->getFile(), $e->getTrace());
-        }
-        $this->database = $this->selectDB(MONGO_DATABASE);
+        $this->mongo = new MongoConnection();
+        $this->connection = $this->mongo->connection();
+        $this->database = $this->connection->selectDB(MONGO_DATABASE);
+    }
+    
+    public function get_connection(){
+        return $this->connection;
     }
     
     /**

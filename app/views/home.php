@@ -15,7 +15,7 @@
                 Así que, disfrútalo (si es que lo llegas a usar...) :D
             </h3>
             <h4><and id="estas">Estás aquí :D</and> app/controllers/home.php </h4>
-            <?php echo Form::text_area('', $file, false, ['rows' => 17, 'cols' => 140, 'readonly' => 'true']); ?>
+            <?php highlight_string($file); ?>
         </div>
     </div>
 </div>

@@ -3,7 +3,7 @@
  * Rutas principales.
  * Main paths.
  */
-define('URL', 'http://www.tvkdeveloper.com/TvK.Framework/1.0/');
+define('URL', 'http://www.tvkdeveloper.com/TvK.Framework/1.0.1/');
 define('SYSTEM', 'framework/');
 define('ASSETS', 'assets/');
     

@@ -1,7 +1,7 @@
 $(function(){
     var options = '';
-    
-    $.getJSON('json_form.php', function(get){
+
+    $.getJSON('../form/json', function(get){
         $.each(get, function(index, value){
             options += '<option value="' + index + '">' + value + '</option>';
         });

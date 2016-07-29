@@ -3,11 +3,11 @@ class ControllerX {
     
     public function active_record($name_crud, $mayus_name_crud, $table_crud, $mayus_table_crud, $pk_table, $fields_table, $ya_existe_crud){
         // Revisamos si el controlador ya existe.
-        if(file_exists("../../app/controllers/$name_crud.php")){
+        if(file_exists("../app/controllers/$name_crud.php")){
             exit($ya_existe_crud);
         }
         // Seguimos...
-        $fc = fopen("../../app/controllers/$name_crud.php", 'a');
+        $fc = fopen("../app/controllers/$name_crud.php", 'a');
         $con = '<?php';
         $con.= "\n";
         $con.= "class $mayus_name_crud extends MainController {";
@@ -22,7 +22,7 @@ class ControllerX {
         $con.= '        $'."$table_crud"." = new $mayus_table_crud();"."\n";
         $con.= '        $data_'."$table_crud".' = $'."$table_crud".'->all();'."\n";
         /** Si existen los layouts 'header' y 'footer'... */
-        if(file_exists('../../app/views/layouts/header.php') && file_exists('../../app/views/layouts/footer.php')){
+        if(file_exists('../app/views/layouts/header.php') && file_exists('../app/views/layouts/footer.php')){
             $con.= "        View::template('$name_crud/index', compact('data_$table_crud'));"."\n";
         } else {
             $con.= "        View::render('$name_crud/index', compact('data_$table_crud'));"."\n";
@@ -43,7 +43,7 @@ class ControllerX {
             $con.= "            Redirect::to('$name_crud');"."\n";
             $con.= '        }'."\n";
             /** Si existen los layouts 'header' y 'footer'... */
-            if(file_exists('../../app/views/layouts/header.php') && file_exists('../../app/views/layouts/footer.php')){
+            if(file_exists('../app/views/layouts/header.php') && file_exists('../app/views/layouts/footer.php')){
                 $con.= "        View::template('$name_crud/edit', compact('data_$table_crud', 'data_$table_crud"."_edit'));"."\n";
             } else {
                 $con.= "        View::render('$name_crud/edit', compact('data_$table_crud', 'data_$table_crud"."_edit'));"."\n";

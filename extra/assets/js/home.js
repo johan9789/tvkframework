@@ -25,7 +25,7 @@ $(function(){
         var table = $("input[name='adm_tb_name']:checked").val();  // también devuelve true :D
         if(name !== ''){
             $.ajax({
-                url: 'crud_act_rec.php',
+                url: $('#form_new_crud_act_rec').attr('action'),
                 type: 'POST',
                 data: 'name_crud=' + name + '&table_crud=' + table,
                 dataType: 'html',

@@ -31,7 +31,6 @@ class FormX {
     }        
     
     public function gen_classic_form($text, $type, $name_form, $options_checkbox, $options_radio, $options_select){
-        $form = "\n";
         $form.= '<content>'."\n";
         $form.= '    <form method="post" action="" name="'.$name_form.'" style="font-family: Arial;">'."\n";
         $form.= '        <table>'."\n";
@@ -207,20 +206,23 @@ class FormX {
         }
         $form.= '        </table>'."\n";
         $form.= '    </form>'."\n";
-        $form.= '</content>'."\n";
-        
-        $name_gen = rand();
-        File::create('../../app/generated/forms/form_'.$name_gen.'.php', $form);
+        $form.= '</content>';
 
-        echo $form;
+        $date = date('d-m-Y');
+        $name_gen = rand();
+        File::create('../app/generated/forms/form_'.$date.'_'.$name_gen.'.php', $form);
+
+        Session::start();
+        Session::set('created_form_path', 'form_'.$date.'_'.$name_gen.'.php');
+        Session::set('created_form', $form);
     }
     
     public function gen_html5_form($text, $type, $name_form, $options_checkbox, $options_radio, $options_select){
-        $form = "\n";
-        $form.= '<content>'."\n";
+        $form.= '<content style="font-family: Helvetica; color: #5A6064;">'."\n";
         $form.= '    <form method="post" action="" name="'.$name_form.'">'."\n";
-        $form.= '        <fieldset>'."\n";
-        $form.= '            <legend>'.ucfirst($name_form).'</legend>'."\n";
+        $form.= '        <fieldset style="border: 0;">'."\n";
+        $form.= '            <h3>'.ucfirst($name_form).'</h3>'."\n";
+        // $form.= '<ol>';
         for($i=0;$i<count($text);$i++){
             if(!empty($text[$i]) && !empty($type[$i])){        
                 if($type[$i] == 'button'){
@@ -301,13 +303,13 @@ class FormX {
                     $opt_sel = $options_select[$i];
                     if(isset($opt_sel) && !empty($opt_sel)){
                         $opt_sel = explode(', ', $opt_sel);                        
-                    $form.= '                    <select name="'.$text[$i].'">'."\n";
+                        $form.= '                    <select name="'.$text[$i].'">'."\n";
                         foreach($opt_sel as $opt){
-                    $form.= '                        <option value="'.ucfirst($opt).'">'.ucfirst($opt).'</option>'."\n";
+                            $form.= '                        <option value="'.ucfirst($opt).'">'.ucfirst($opt).'</option>'."\n";
                         }
-                    $form.= '                    </select>'."\n";
+                        $form.= '                    </select>'."\n";
                     } else {
-                    $form.= '                    <select name="'.$text[$i].'"></select>'."\n";
+                        $form.= '                    <select name="'.$text[$i].'"></select>'."\n";
                     }
                     $form.= '                </label>'."\n";
                     $form.= '            </p>'."\n";
@@ -337,21 +339,20 @@ class FormX {
         }
         $form.= '        </fieldset>'."\n";
         $form.= '    </form>'."\n";
-        $form.= '</content>'."\n";
+        $form.= '</content>';
         
+        $date = date('d-m-Y');
         $name_gen = rand();
-        File::create('../../app/generated/forms/form_'.$name_gen.'.php', $form);
+        File::create('../app/generated/forms/form_'.$date.'_'.$name_gen.'.php', $form);
 
         Session::start();
-        Session::set('html5_created_form', $form);
-        
-        //echo $form;
+        Session::set('created_form_path', 'form_'.$date.'_'.$name_gen.'.php');
+        Session::set('created_form', $form);
     }
     
     public function gen_tvk_form($text, $type, $name_form, $options_checkbox, $options_radio, $options_select){
-        $form = "\n";
-        $form.= '<content>'."\n";
-        $form.= "    <?php echo Form::open('', 'post', ['name' => '{$name_form}', 'style' => 'font-family: Arial']); ?>"."\n";
+        $form.= '<content style="font-family: Helvetica; color: #5A6064;">'."\n";
+        $form.= "    <?php echo Form::open('', 'post', ['name' => '{$name_form}']); ?>"."\n";
         $form.= '        <table>'."\n";
         $form.= '            <tr><th colspan="2" align="center">'.ucfirst($name_form).'</th></tr>'."\n";
         for($i=0;$i<count($text);$i++){
@@ -377,61 +378,61 @@ class FormX {
                 if($type[$i] == 'color'){
                     $form.= '            <tr>'."\n";
                     $form.= '                <td>'.ucfirst($text[$i]).':</td>'."\n";
-                    $form.= '                <td><input type="color" name="'.$text[$i].'"></td>'."\n";
+                    $form.= '                <td><?php echo Form::extra('."'color'".', '."'".$text[$i]."'".'); ?></td>'."\n";
                     $form.= '            </tr>'."\n";
                 }
                 if($type[$i] == 'date'){
                     $form.= '            <tr>'."\n";
                     $form.= '                <td>'.ucfirst($text[$i]).':</td>'."\n";
-                    $form.= '                <td><input type="date" name="'.$text[$i].'"></td>'."\n";
+                    $form.= '                <td><?php echo Form::extra('."'date'".', '."'".$text[$i]."'".'); ?></td>'."\n";
                     $form.= '            </tr>'."\n";
                 }
                 if($type[$i] == 'datetime'){
                     $form.= '            <tr>'."\n";
                     $form.= '                <td>'.ucfirst($text[$i]).':</td>'."\n";
-                    $form.= '                <td><input type="datetime" name="'.$text[$i].'"></td>'."\n";
+                    $form.= '                <td><?php echo Form::extra('."'datetime'".', '."'".$text[$i]."'".'); ?></td>'."\n";
                     $form.= '            </tr>'."\n";
                 }
                 if($type[$i] == 'datetime-local'){
                     $form.= '            <tr>'."\n";
                     $form.= '                <td>'.ucfirst($text[$i]).':</td>'."\n";
-                    $form.= '                <td><input type="datetime-local" name="'.$text[$i].'"></td>'."\n";
+                    $form.= '                <td><?php echo Form::extra('."'datetime-local'".', '."'".$text[$i]."'".'); ?></td>'."\n";
                     $form.= '            </tr>'."\n";
                 }
                 if($type[$i] == 'email'){
                     $form.= '            <tr>'."\n";
                     $form.= '                <td>'.ucfirst($text[$i]).':</td>'."\n";
-                    $form.= '                <td><input type="email" name="'.$text[$i].'"></td>'."\n";
+                    $form.= '                <td><?php echo Form::email('."'".$text[$i]."'".'); ?></td>'."\n";
                     $form.= '            </tr>'."\n";
                 }
                 if($type[$i] == 'file'){
                     $form.= '            <tr>'."\n";
                     $form.= '                <td>'.ucfirst($text[$i]).':</td>'."\n";
-                    $form.= '                <td><input type="file" name="'.$text[$i].'"></td>'."\n";
+                    $form.= '                <td><?php echo Form::file('."'".$text[$i]."'".'); ?></td>'."\n";
                     $form.= '            </tr>'."\n";
                 }
                 if($type[$i] == 'hidden'){
-                    $form.= '            <tr><td colspan="2"><input type="hidden" name="'.$text[$i].'"></td></tr>'."\n";
+                    $form.= '            <tr><td colspan="2"><?php echo Form::hidden('."'".$text[$i]."'".'); ?></td></tr>'."\n";
                 }
                 if($type[$i] == 'image'){
-                    $form.= '            <tr><td align="right" colspan="2"><input src="" value="'.ucfirst($text[$i]).'" type="image" name="'.$text[$i].'"></td></tr>'."\n";
+                    $form.= '            <tr><td><?php echo Form::extra('."'image'".', '."'".$text[$i]."'".', '."'".ucfirst($text[$i])."'".'); ?></td></tr>'."\n";
                 }
                 if($type[$i] == 'month'){
                     $form.= '            <tr>'."\n";
                     $form.= '                <td>'.ucfirst($text[$i]).':</td>'."\n";
-                    $form.= '                <td><input type="month" name="'.$text[$i].'"></td>'."\n";
+                    $form.= '                <td><?php echo Form::extra('."'month'".', '."'".$text[$i]."'".'); ?></td>'."\n";
                     $form.= '            </tr>'."\n";
                 }
                 if($type[$i] == 'number'){
                     $form.= '            <tr>'."\n";
                     $form.= '                <td>'.ucfirst($text[$i]).':</td>'."\n";
-                    $form.= '                <td><input type="number" min="" max="" step="" name="'.$text[$i].'"></td>'."\n";
+                    $form.= '                <td><?php echo Form::extra('."'number'".', '."'".$text[$i]."'".'); ?></td>'."\n";
                     $form.= '            </tr>'."\n";
                 }
                 if($type[$i] == 'password'){
                     $form.= '            <tr>'."\n";
                     $form.= '                <td>'.ucfirst($text[$i]).':</td>'."\n";
-                    $form.= '                <td><input type="password" name="'.$text[$i].'"></td>'."\n";
+                    $form.= '                <td><?php echo Form::password('."'".$text[$i]."'".'); ?></td>'."\n";
                     $form.= '            </tr>'."\n";
                 }
                 if($type[$i] == 'radio'){
@@ -442,7 +443,7 @@ class FormX {
                         $radio_sel = explode(', ', $radio_sel);
                         $form.= '                <td>'."\n";
                         foreach($radio_sel as $radio){
-                            $form.= '                    <input type="radio" name="'.$text[$i].'">'.ucfirst($radio).'<br>'."\n";
+                            $form.= "                    <?php echo Form::radio('{$text[$i]}', '".ucfirst($radio)."'); ?> ".ucfirst($radio).'<br>'."\n";
                         }                
                         $form.= '                </td>'."\n";
                     } else {                
@@ -452,16 +453,16 @@ class FormX {
                 if($type[$i] == 'range'){
                     $form.= '            <tr>'."\n";
                     $form.= '                <td>'.ucfirst($text[$i]).':</td>'."\n";
-                    $form.= '                <td><input type="range" name="'.$text[$i].'"></td>'."\n";
+                    $form.= '                <td><?php echo Form::extra('."'range'".', '."'".$text[$i]."'".'); ?></td>'."\n";
                     $form.= '            </tr>'."\n";
                 }
                 if($type[$i] == 'reset'){
-                    $form.= '            <tr><td align="right" colspan="2"><input value="'.ucfirst($text[$i]).'" type="reset" name="'.$text[$i].'"></td></tr>'."\n";
+                    $form.= '            <tr><td><?php echo Form::extra('."'reset'".', '."'".$text[$i]."'".', '."'".ucfirst($text[$i])."'".'); ?></td></tr>'."\n";
                 }
                 if($type[$i] == 'search'){
                     $form.= '            <tr>'."\n";
                     $form.= '                <td>'.ucfirst($text[$i]).':</td>'."\n";
-                    $form.= '                <td><input type="search" name="'.$text[$i].'"></td>'."\n";
+                    $form.= '                <td><?php echo Form::extra('."'search'".', '."'".$text[$i]."'".'); ?></td>'."\n";
                     $form.= '            </tr>'."\n";
                 }
                 if($type[$i] == 'select'){
@@ -471,66 +472,72 @@ class FormX {
                     if(isset($opt_sel) && !empty($opt_sel)){
                         $opt_sel = explode(', ', $opt_sel);
                         $form.= '                <td>'."\n";
-                        $form.= '                    <select name="'.$text[$i].'">'."\n";
+                        $form.= '                    <?php echo Form::select_open('."'".$text[$i]."'".'); ?>'."\n";
+                        $options = '[';
                         foreach($opt_sel as $opt){
-                            $form.= '                        <option value="'.$opt.'">'.ucfirst($opt).'</option>'."\n";
+                            $options.= "'".$opt."' => '".$opt."', ";
                         }
-                        $form.= '                    </select>'."\n";
+                        $options.= ']';
+                        $form.= '                    <?php echo Form::option('.$options.'); ?>'."\n";
+                        $form.= '                    <?php echo Form::select_close(); ?>'."\n";
                         $form.= '                </td>'."\n";
                     } else {
-                        $form.= '                <td><select name="'.$text[$i].'"></select></td>'."\n";
+                        $form.= '                <td><?php echo Form::select('."'".$text[$i]."'".'); ?></td>'."\n";
                     }
                     $form.= '            </tr>'."\n";
                 }
                 if($type[$i] == 'submit'){
-                    $form.= '            <tr><td align="right" colspan="2"><input value="'.ucfirst($text[$i]).'" type="submit" name="'.$text[$i].'"></td></tr>'."\n";
+                    $form.= '            <tr><td align="right" colspan="2"><?php echo Form::submit('."'".ucfirst($text[$i])."'".', '."'".$text[$i]."'".'); ?></td></tr>'."\n";
                 }
                 if($type[$i] == 'tel'){
                     $form.= '            <tr>'."\n";
                     $form.= '                <td>'.ucfirst($text[$i]).':</td>'."\n";
-                    $form.= '                <td><input type="tel" name="'.$text[$i].'"></td>'."\n";
+                    $form.= '                <td><?php echo Form::extra('."'tel'".', '."'".$text[$i]."'".'); ?></td>'."\n";
                     $form.= '            </tr>'."\n";
                 }
                 if($type[$i] == 'text'){
                     $form.= '            <tr>'."\n";
                     $form.= '                <td>'.ucfirst($text[$i]).':</td>'."\n";
-                    $form.= '                <td><input type="text" name="'.$text[$i].'"></td>'."\n";
+                    $form.= '                <td><?php echo Form::text('."'".$text[$i]."'".'); ?></td>'."\n";
                     $form.= '            </tr>'."\n";
                 }
                 if($type[$i] == 'textarea'){
                     $form.= '            <tr>'."\n";
                     $form.= '                <td>'.ucfirst($text[$i]).':</td>'."\n";
-                    $form.= '                <td><textarea name="'.$text[$i].'"></textarea></td>'."\n";
+                    $form.= '                <td><?php echo Form::text_area('."'".$text[$i]."'".'); ?></td>'."\n";
                     $form.= '            </tr>'."\n";
                 }
                 if($type[$i] == 'time'){
                     $form.= '            <tr>'."\n";
                     $form.= '                <td>'.ucfirst($text[$i]).':</td>'."\n";
-                    $form.= '                <td><input type="time" name="'.$text[$i].'"></td>'."\n";
+                    $form.= '                <td><?php echo Form::extra('."'time'".', '."'".$text[$i]."'".'); ?></td>'."\n";
                     $form.= '            </tr>'."\n";
                 }
                 if($type[$i] == 'url'){
                     $form.= '            <tr>'."\n";
                     $form.= '                <td>'.ucfirst($text[$i]).':</td>'."\n";
-                    $form.= '                <td><input type="url" name="'.$text[$i].'"></td>'."\n";
+                    $form.= '                <td><?php echo Form::extra('."'url'".', '."'".$text[$i]."'".'); ?></td>'."\n";
                     $form.= '            </tr>'."\n";
                 }
                 if($type[$i] == 'week'){
                     $form.= '            <tr>'."\n";
                     $form.= '                <td>'.ucfirst($text[$i]).':</td>'."\n";
-                    $form.= '                <td><input type="week" name="'.$text[$i].'"></td>'."\n";
+                    $form.= '                <td><?php echo Form::extra('."'week'".', '."'".$text[$i]."'".'); ?></td>'."\n";
                     $form.= '            </tr>'."\n";
                 }
             }
         }
         $form.= '        </table>'."\n";
-        $form.= '    </form>'."\n";
-        $form.= '</content>'."\n";
+        $form.= '    <?php echo Form::close(); ?>'."\n";
+        $form.= '</content>';
         
+        $date = date('d-m-Y');
         $name_gen = rand();
-        File::create('../../app/generated/forms/form_'.$name_gen.'.php', $form);
+        File::create('../app/generated/forms/form_'.$date.'_'.$name_gen.'.php', $form);
 
-        require_once '../../app/generated/forms/form_'.$name_gen.'.php';
+        Session::start();
+        Session::set('tvk_created_form_path', 'form_'.$date.'_'.$name_gen.'.php');
+        Session::set('tvk_created_form', $form);
     }
     
 }

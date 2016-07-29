@@ -14,13 +14,12 @@
  * 
  */
 
-require_once '../../app/config/paths.php';
-require_once '../config.php';
-spl_autoload_register(function($class){
-    if(file_exists("../../".SYSTEM."libraries/$class.php")){
-        require_once "../../".SYSTEM."libraries/$class.php";
-    }
-});
-Session::start();
-Session::destroy();
-Redirect::other('../index.php');
+/**
+ * Datos de configuración para el inicio de sesión.
+ * Config data to login.
+ */
+$adm_auth['active'] = true;
+$adm_auth['adm_auth_username'] = 'johan123';
+$adm_auth['adm_auth_password'] = 'johan1';
+$adm_auth['lang'] = (Session::has('xlangxlang')) ? Session::get('xlangxlang') : 'es';
+$adm_auth['preview'] = true;

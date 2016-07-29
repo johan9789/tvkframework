@@ -6,7 +6,7 @@ $(function(){
         apprise(mensaje, {'verify':true}, function(r){
             if(r){
                 $.ajax({
-                    url: 'model_act_rec.php',
+                    url: $('#first_action').attr('class'),
                     type: 'POST',
                     data: 'table_crud=' + table,
                     dataType: 'html',
@@ -27,7 +27,7 @@ $(function(){
         apprise(mensaje, {'verify':true}, function(r){
             if(r){
                 $.ajax({
-                    url: 'model_rel.php',
+                    url: $('#second_action').attr('class'),
                     type: 'POST',
                     data: 'table_crud=' + table,
                     dataType: 'html',
