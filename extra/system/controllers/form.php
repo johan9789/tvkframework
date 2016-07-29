@@ -11,7 +11,7 @@ class Form extends ExtraController {
     }
 
     public function generate(){
-        App::not_post('', true, 'extra/start');
+        Request::post('', true, 'extra/start');
 
         $all = Input::all();
         $text = $all['text_form'];

@@ -10,7 +10,7 @@ class Model extends ExtraController {
     }
 
     public function create_active_record(){
-        App::not_post('', true, 'extra/start/models');
+        Request::post('', true, 'extra/start/models');
         require 'system/config/config.php';
         require 'system/config/lang.php';
         
@@ -29,11 +29,11 @@ class Model extends ExtraController {
     }
 
     public function create_relational_static(){
-        App::not_post('En construcción.', true, 'extra/start/models');
+        Request::post('En construcción.', true, 'extra/start/models');
     }
 
     public function create_relational_inherited(){
-        App::not_post('En construcción.', true, 'extra/start/models');
+        Request::post('En construcción.', true, 'extra/start/models');
     }
 
 }

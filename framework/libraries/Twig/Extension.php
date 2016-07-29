@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -8,8 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-abstract class Twig_Extension implements Twig_ExtensionInterface
-{
+
+abstract class Twig_Extension implements Twig_ExtensionInterface {
+
     /**
      * Initializes the runtime environment.
      *
@@ -17,17 +17,14 @@ abstract class Twig_Extension implements Twig_ExtensionInterface
      *
      * @param Twig_Environment $environment The current Twig_Environment instance
      */
-    public function initRuntime(Twig_Environment $environment)
-    {
-    }
+    public function initRuntime(Twig_Environment $environment) {}
 
     /**
      * Returns the token parser instances to add to the existing list.
      *
      * @return array An array of Twig_TokenParserInterface or Twig_TokenParserBrokerInterface instances
      */
-    public function getTokenParsers()
-    {
+    public function getTokenParsers() {
         return array();
     }
 
@@ -36,8 +33,7 @@ abstract class Twig_Extension implements Twig_ExtensionInterface
      *
      * @return array An array of Twig_NodeVisitorInterface instances
      */
-    public function getNodeVisitors()
-    {
+    public function getNodeVisitors() {
         return array();
     }
 
@@ -46,8 +42,7 @@ abstract class Twig_Extension implements Twig_ExtensionInterface
      *
      * @return array An array of filters
      */
-    public function getFilters()
-    {
+    public function getFilters() {
         return array();
     }
 
@@ -56,8 +51,7 @@ abstract class Twig_Extension implements Twig_ExtensionInterface
      *
      * @return array An array of tests
      */
-    public function getTests()
-    {
+    public function getTests() {
         return array();
     }
 
@@ -66,8 +60,7 @@ abstract class Twig_Extension implements Twig_ExtensionInterface
      *
      * @return array An array of functions
      */
-    public function getFunctions()
-    {
+    public function getFunctions() {
         return array();
     }
 
@@ -76,8 +69,7 @@ abstract class Twig_Extension implements Twig_ExtensionInterface
      *
      * @return array An array of operators
      */
-    public function getOperators()
-    {
+    public function getOperators() {
         return array();
     }
 
@@ -86,8 +78,8 @@ abstract class Twig_Extension implements Twig_ExtensionInterface
      *
      * @return array An array of global functions
      */
-    public function getGlobals()
-    {
+    public function getGlobals() {
         return array();
     }
+
 }

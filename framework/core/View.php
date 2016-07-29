@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0.1
+ * @version 1.0.2
  * 
  */
 
@@ -26,17 +26,12 @@ class View {
      * @param string $name El nombre del archivo a cargar.<br>The file name to load.
      * @param array $data Variables a incluir en la vista.<br>Variables to include in the view.
      */
-    public static function render($name, array $data = array()){       
-    	if(!is_null($data)){
-            extract($data);
+    public static function render($name, array $data = array()){        
+        if(!file_exists('app/views/'.$name.'.php')){
+            ExecuteError::not_view($name);
         }
-        if(file_exists('app/views/'.$name.'.php')){
-            require 'app/views/'.$name.'.php';
-        } else {
-            require_once 'app/errors/error.php';
-            $error = new Error();
-            $error->not_view($name);
-        }
+        extract($data);
+        require 'app/views/'.$name.'.php';
     }
     
     /**
@@ -46,18 +41,13 @@ class View {
      * @param array $data Variables a incluir en la vista.<br>Variables to include in the view.
      */
     public static function template($name, array $data = array()){
-        if(!is_null($data)){
-            extract($data);
+        if(!file_exists('app/views/'.$name.'.php')){
+            ExecuteError::not_view($name);
         }
-        if(file_exists('app/views/'.$name.'.php')){
-            require 'app/views/layouts/header.php';
-            require 'app/views/'.$name.'.php';
-            require 'app/views/layouts/footer.php';
-        } else {
-            require_once 'app/errors/error.php';
-            $error = new Error();
-            $error->not_view($name);
-        }
+        extract($data);
+        require 'app/views/layouts/header.php';
+        require 'app/views/'.$name.'.php';
+        require 'app/views/layouts/footer.php';
     }
 
     /**
@@ -67,53 +57,28 @@ class View {
      * @param array $data Variables a incluir en la vista.<br>Variables to include in the view.
      */
     public static function render_x($name, array $data = array()){
-        if(!is_null($data)){
-            extract($data);
+        if(!file_exists($name.'.php')){
+            ExecuteError::not_view($name);
         }
-        if(file_exists($name.'.php')){
-            require $name.'.php';
-        } else {
-            require_once 'app/errors/error.php';
-            $error = new Error();
-            $error->not_view($name);
-        }
+        extract($data);
+        require $name.'.php';
     }
     
-    public static function test($name, array $data = array()){
+    /**
+     * Usamos el motor de plantillas twig y cargamos la vista.<br><br>
+     * We use the twig template engine and load the view.
+     * @param string $name El nombre del archivo a cargar.<br>The file name to load.
+     * @param array $data Variables a incluir en la vista.<br>Variables to include in the view.
+     */
+    public static function twig($name, array $data = array()){
+        if(!file_exists('app/views/'.$name.'.php')){
+            ExecuteError::not_view($name);
+        }
         Twig_Autoloader::register();
         $loader = new Twig_Loader_Filesystem('app/views');
         $twig = new Twig_Environment($loader, array('app/cache' => 'cache', 'debug' => 'true'));
         $template = $twig->loadTemplate($name.'.php');
         echo $template->render($data);
     }
-
-    public static function get_include_contents($filename) {
-        if(is_file($filename)) {
-            ob_start();
-            include $filename;
-            return ob_get_clean();
-        }
-        return false;
-    }
     
-    public static function test2($name, array $data = array()){
-        if(!is_null($data)){
-            extract($data);
-        }
-        if(file_exists('app/views/'.$name.'.php')){
-            //echo View::return_view('test2');
-            $content = file_get_contents('app/views/'.$name.'.php');
-            // $content = require_once 'app/views/'.$name.'.php';            
-            require 'app/views/layouts/main.php';
-        } else {
-            require_once 'app/errors/error.php';
-            $error = new Error();
-            $error->not_view($name);
-        }
-    }
-    
-    public static function return_view($name){
-        return require_once 'app/views/'.$name.'.php';
-    }
-
 }

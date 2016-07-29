@@ -1,10 +1,5 @@
 <?php
 /**
- * Para manejar otras constantes importantes en la aplicación.<br><br>
- * To handle other important constants in the app.
- */
-
-/**
  * HashKeys:
  * Definir una vez y usarlo en la aplicación, no modificar luego.
  * Define one time and use it in the app, don't modify after.

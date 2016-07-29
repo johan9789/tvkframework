@@ -61,7 +61,7 @@ class AutoloadX {
     private function first(){        
         require_once '../app/config/paths.php';
         require_once '../app/config/database.php';
-        require_once '../app/config/other.php';
+        require_once '../app/config/keys.php';
         require_once '../'.SYSTEM.'core/Functions.php';
         require_once '../'.SYSTEM.'libraries/Twig/Autoloader.php';        
     }

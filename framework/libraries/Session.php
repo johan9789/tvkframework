@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0.1
+ * @version 1.0.2
  * 
  */
 
@@ -95,12 +95,13 @@ class Session {
     }
     
     /**
-     * 
-     * @param type $value
-     * @return type
+     * Verifica si la sesión existe o no.<br><br>
+     * Verifies if the session exists or not.
+     * @param mixed $value Nombre de la sesión a buscar.<br>Session name to search.
+     * @return boolean Devuelve 'true' si la sesión existe, 'false' si no existe.<br>Returns 'true' if the session exists, 'false' if not.
      * @since 1.0.1
      */
-    public function has($value){
+    public static function has($value){
         return(isset($_SESSION[SESSION_KEY.$value]));
     }
         

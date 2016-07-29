@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -8,12 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class Twig_Extension_Escaper extends Twig_Extension
-{
+
+class Twig_Extension_Escaper extends Twig_Extension {
     protected $autoescape;
 
-    public function __construct($autoescape = true)
-    {
+    public function __construct($autoescape = true) {
         $this->autoescape = $autoescape;
     }
 
@@ -22,8 +20,7 @@ class Twig_Extension_Escaper extends Twig_Extension
      *
      * @return array An array of Twig_TokenParserInterface or Twig_TokenParserBrokerInterface instances
      */
-    public function getTokenParsers()
-    {
+    public function getTokenParsers() {
         return array(new Twig_TokenParser_AutoEscape());
     }
 
@@ -32,8 +29,7 @@ class Twig_Extension_Escaper extends Twig_Extension
      *
      * @return array An array of Twig_NodeVisitorInterface instances
      */
-    public function getNodeVisitors()
-    {
+    public function getNodeVisitors() {
         return array(new Twig_NodeVisitor_Escaper());
     }
 
@@ -42,15 +38,13 @@ class Twig_Extension_Escaper extends Twig_Extension
      *
      * @return array An array of filters
      */
-    public function getFilters()
-    {
+    public function getFilters() {
         return array(
             'raw' => new Twig_Filter_Function('twig_raw_filter', array('is_safe' => array('all'))),
         );
     }
 
-    public function isGlobal()
-    {
+    public function isGlobal() {
         return $this->autoescape;
     }
 
@@ -59,15 +53,13 @@ class Twig_Extension_Escaper extends Twig_Extension
      *
      * @return string The extension name
      */
-    public function getName()
-    {
+    public function getName() {
         return 'escaper';
     }
+
 }
 
 // tells the escaper node visitor that the string is safe
-function twig_raw_filter($string)
-{
+function twig_raw_filter($string) {
     return $string;
 }
-

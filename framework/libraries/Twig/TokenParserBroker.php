@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -16,8 +15,7 @@
  * @package twig
  * @author  Arnaud Le Blanc <arnaud.lb@gmail.com>
  */
-class Twig_TokenParserBroker implements Twig_TokenParserBrokerInterface
-{
+class Twig_TokenParserBroker implements Twig_TokenParserBrokerInterface {
     protected $parser;
     protected $parsers = array();
     protected $brokers = array();
@@ -28,8 +26,7 @@ class Twig_TokenParserBroker implements Twig_TokenParserBrokerInterface
      * @param array|Traversable $parsers A Traversable of Twig_TokenParserInterface instances
      * @param array|Traversable $brokers A Traversable of Twig_TokenParserBrokerInterface instances
      */
-    public function __construct($parsers = array(), $brokers = array())
-    {
+    public function __construct($parsers = array(), $brokers = array()) {
         foreach ($parsers as $parser) {
             if (!$parser instanceof Twig_TokenParserInterface) {
                 throw new Twig_Error('$parsers must a an array of Twig_TokenParserInterface');
@@ -49,8 +46,7 @@ class Twig_TokenParserBroker implements Twig_TokenParserBrokerInterface
      *
      * @param Twig_TokenParserInterface $parser A Twig_TokenParserInterface instance
      */
-    public function addTokenParser(Twig_TokenParserInterface $parser)
-    {
+    public function addTokenParser(Twig_TokenParserInterface $parser) {
         $this->parsers[$parser->getTag()] = $parser;
     }
 
@@ -59,8 +55,7 @@ class Twig_TokenParserBroker implements Twig_TokenParserBrokerInterface
      *
      * @param Twig_TokenParserBroker $broker A Twig_TokenParserBroker instance
      */
-    public function addTokenParserBroker(Twig_TokenParserBroker $broker)
-    {
+    public function addTokenParserBroker(Twig_TokenParserBroker $broker) {
         $this->brokers[] = $broker;
     }
 
@@ -73,8 +68,7 @@ class Twig_TokenParserBroker implements Twig_TokenParserBrokerInterface
      *
      * @return null|Twig_TokenParserInterface A Twig_TokenParserInterface or null if no suitable TokenParser was found
      */
-    public function getTokenParser($tag)
-    {
+    public function getTokenParser($tag) {
         if (isset($this->parsers[$tag])) {
             return $this->parsers[$tag];
         }
@@ -89,13 +83,11 @@ class Twig_TokenParserBroker implements Twig_TokenParserBrokerInterface
         return null;
     }
 
-    public function getParser()
-    {
+    public function getParser() {
         return $this->parser;
     }
 
-    public function setParser(Twig_ParserInterface $parser)
-    {
+    public function setParser(Twig_ParserInterface $parser) {
         $this->parser = $parser;
         foreach ($this->parsers as $tokenParser) {
             $tokenParser->setParser($parser);
@@ -104,4 +96,5 @@ class Twig_TokenParserBroker implements Twig_TokenParserBrokerInterface
             $broker->setParser($parser);
         }
     }
+
 }

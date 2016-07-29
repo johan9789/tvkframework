@@ -3,7 +3,7 @@
  * Rutas principales.
  * Main paths.
  */
-define('URL', 'http://www.tvkdeveloper.com/TvK.Framework/1.0.1/');
+define('URL', 'http://www.tvkdeveloper.com/TvK.Framework/1.0.2/');
 define('SYSTEM', 'framework/');
 define('ASSETS', 'assets/');
     
@@ -18,5 +18,5 @@ define('MODELS_PATH', 'app/models/');
  * Pagina principal (controlador principal) y página de error.
  * Main page (main controller) and error page.
  */    
-define('DEFAULT_FILE', 'home.php');
-define('ERROR_FILE', 'error.php');
+define('DEFAULT_FILE', 'Home.php');
+define('ERROR_FILE', 'MyErrors.php');

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -16,8 +15,7 @@
  * @package    twig
  * @author     Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Node implements Twig_NodeInterface, Countable, IteratorAggregate
-{
+class Twig_Node implements Twig_NodeInterface, Countable, IteratorAggregate {
     protected $nodes;
     protected $attributes;
     protected $lineno;
@@ -34,29 +32,27 @@ class Twig_Node implements Twig_NodeInterface, Countable, IteratorAggregate
      * @param integer $lineno     The line number
      * @param string  $tag        The tag name associated with the Node
      */
-    public function __construct(array $nodes = array(), array $attributes = array(), $lineno = 0, $tag = null)
-    {
+    public function __construct(array $nodes = array(), array $attributes = array(), $lineno = 0, $tag = null) {
         $this->nodes = $nodes;
         $this->attributes = $attributes;
         $this->lineno = $lineno;
         $this->tag = $tag;
     }
 
-    public function __toString()
-    {
+    public function __toString() {
         $attributes = array();
         foreach ($this->attributes as $name => $value) {
             $attributes[] = sprintf('%s: %s', $name, str_replace("\n", '', var_export($value, true)));
         }
 
-        $repr = array(get_class($this).'('.implode(', ', $attributes));
+        $repr = array(get_class($this) . '(' . implode(', ', $attributes));
 
         if (count($this->nodes)) {
             foreach ($this->nodes as $name => $node) {
                 $len = strlen($name) + 4;
                 $noderepr = array();
                 foreach (explode("\n", (string) $node) as $line) {
-                    $noderepr[] = str_repeat(' ', $len).$line;
+                    $noderepr[] = str_repeat(' ', $len) . $line;
                 }
 
                 $repr[] = sprintf('  %s: %s', $name, ltrim(implode("\n", $noderepr)));
@@ -70,8 +66,7 @@ class Twig_Node implements Twig_NodeInterface, Countable, IteratorAggregate
         return implode("\n", $repr);
     }
 
-    public function toXml($asDom = false)
-    {
+    public function toXml($asDom = false) {
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
         $dom->appendChild($xml = $dom->createElement('twig'));
@@ -100,20 +95,17 @@ class Twig_Node implements Twig_NodeInterface, Countable, IteratorAggregate
         return $asDom ? $dom : $dom->saveXml();
     }
 
-    public function compile(Twig_Compiler $compiler)
-    {
+    public function compile(Twig_Compiler $compiler) {
         foreach ($this->nodes as $node) {
             $node->compile($compiler);
         }
     }
 
-    public function getLine()
-    {
+    public function getLine() {
         return $this->lineno;
     }
 
-    public function getNodeTag()
-    {
+    public function getNodeTag() {
         return $this->tag;
     }
 
@@ -124,8 +116,7 @@ class Twig_Node implements Twig_NodeInterface, Countable, IteratorAggregate
      *
      * @return Boolean true if the attribute is defined, false otherwise
      */
-    public function hasAttribute($name)
-    {
+    public function hasAttribute($name) {
         return array_key_exists($name, $this->attributes);
     }
 
@@ -136,8 +127,7 @@ class Twig_Node implements Twig_NodeInterface, Countable, IteratorAggregate
      *
      * @return mixed  The attribute value
      */
-    public function getAttribute($name)
-    {
+    public function getAttribute($name) {
         if (!array_key_exists($name, $this->attributes)) {
             throw new Twig_Error_Runtime(sprintf('Attribute "%s" does not exist for Node "%s".', $name, get_class($this)));
         }
@@ -151,8 +141,7 @@ class Twig_Node implements Twig_NodeInterface, Countable, IteratorAggregate
      * @param string The attribute name
      * @param mixed  The attribute value
      */
-    public function setAttribute($name, $value)
-    {
+    public function setAttribute($name, $value) {
         $this->attributes[$name] = $value;
     }
 
@@ -161,8 +150,7 @@ class Twig_Node implements Twig_NodeInterface, Countable, IteratorAggregate
      *
      * @param string The attribute name
      */
-    public function removeAttribute($name)
-    {
+    public function removeAttribute($name) {
         unset($this->attributes[$name]);
     }
 
@@ -173,8 +161,7 @@ class Twig_Node implements Twig_NodeInterface, Countable, IteratorAggregate
      *
      * @return Boolean true if the node with the given name exists, false otherwise
      */
-    public function hasNode($name)
-    {
+    public function hasNode($name) {
         return array_key_exists($name, $this->nodes);
     }
 
@@ -185,8 +172,7 @@ class Twig_Node implements Twig_NodeInterface, Countable, IteratorAggregate
      *
      * @return Twig_Node A Twig_Node instance
      */
-    public function getNode($name)
-    {
+    public function getNode($name) {
         if (!array_key_exists($name, $this->nodes)) {
             throw new Twig_Error_Runtime(sprintf('Node "%s" does not exist for Node "%s".', $name, get_class($this)));
         }
@@ -200,8 +186,7 @@ class Twig_Node implements Twig_NodeInterface, Countable, IteratorAggregate
      * @param string    The node name
      * @param Twig_Node A Twig_Node instance
      */
-    public function setNode($name, $node = null)
-    {
+    public function setNode($name, $node = null) {
         $this->nodes[$name] = $node;
     }
 
@@ -210,18 +195,16 @@ class Twig_Node implements Twig_NodeInterface, Countable, IteratorAggregate
      *
      * @param string The node name
      */
-    public function removeNode($name)
-    {
+    public function removeNode($name) {
         unset($this->nodes[$name]);
     }
 
-    public function count()
-    {
+    public function count() {
         return count($this->nodes);
     }
 
-    public function getIterator()
-    {
+    public function getIterator() {
         return new ArrayIterator($this->nodes);
     }
+
 }

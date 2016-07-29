@@ -38,7 +38,7 @@ class ViewX {
             }
             fwrite($fv, "        <tr>"."\n");
             fwrite($fv, "            <td>".ucfirst($fields_t).":</td>"."\n");
-            fwrite($fv, "            <td><?php echo Form::text('".App::replace_special_chars($fields_t)."'); ?></td>"."\n");
+            fwrite($fv, "            <td><?php echo Form::text('".replace_special_chars($fields_t)."'); ?></td>"."\n");
             fwrite($fv, "        </tr>"."\n");
         }
         fwrite($fv, "        <tr><td></td></tr>"."\n");
@@ -103,7 +103,7 @@ class ViewX {
             }
             fwrite($fv, "        <tr>"."\n");
             fwrite($fv, "            <td>".ucfirst($fields_t).":</td>"."\n");
-            fwrite($fv, "            <td><?php echo Form::text('".App::replace_special_chars($fields_t)."', ".'$data_'."$table_crud".'_edit->'."$fields_t); ?></td>"."\n");
+            fwrite($fv, "            <td><?php echo Form::text('".replace_special_chars($fields_t)."', ".'$data_'."$table_crud".'_edit->'."$fields_t); ?></td>"."\n");
             fwrite($fv, "        </tr>"."\n");
         }
         fwrite($fv, "        <tr><td></td></tr>"."\n");

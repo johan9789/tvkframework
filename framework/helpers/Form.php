@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0.1
+ * @version 1.0.2
  * 
  */
 
@@ -40,7 +40,7 @@ class Form {
         $form_open = "\n";
         $form_open.= '<form ';
         if($base_url){
-            $form_open.= 'action="'.App::base($action).'" ';
+            $form_open.= 'action="'.URL::to($action).'" ';
         } else {
             $form_open.= 'action="'.$action.'" ';
         }
@@ -56,15 +56,15 @@ class Form {
     /**
      *
      */
-    public static function upload($action, $method = 'post', array $other = array(), $base_url = true){
+    public static function upload($action, array $other = array(), $base_url = true){
         $form_open = "\n";
         $form_open.= '<form ';
         if($base_url){            
-            $form_open.= 'action="'.App::base($action).'" ';
+            $form_open.= 'action="'.URL::to($action).'" ';
         } else {
             $form_open.= 'action="'.$action.'" ';
         }
-        $form_open.= 'method="'.$method.'"';        
+        $form_open.= 'method="post"';        
         $form_open.= ' enctype="multipart/form-data"';                
         foreach($other as $attr => $value){
             $form_open.= ' '.$attr.'="'.$value.'"';
@@ -459,4 +459,22 @@ class Form {
         return $optgroup;
     }
     
+    /**
+     * Llama a un formulario ya creado previamente.<br><br>
+     * Calls a previously created form.
+     * @param string $form_path Ruta del formulario.<br>Form path.
+     * @param boolean $generated Indica si el formulario está en la carpeta de formularios generados.<br>Indicates whether the form is in the Forms folder generated.
+     * @param string $url_action Si el formulario será llamado varias veces se debe indicar la url de su 'action'.<br>If the form will be called several times should indicate the url of its 'action'.
+     */   
+    public static function call($form_path, $generated = true, $url_action = null){
+        if(!is_null($url_action)){
+            $action = $url_action;
+        }
+        if($generated){            
+            require_once 'app/generated/forms/'.$form_path.'.php';
+        } else {
+            require_once $form_path.'.php';
+        }
+    }
+
 }

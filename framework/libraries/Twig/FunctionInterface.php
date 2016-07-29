@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -16,8 +15,8 @@
  * @package    twig
  * @author     Arnaud Le Blanc <arnaud.lb@gmail.com>
  */
-interface Twig_FunctionInterface
-{
+interface Twig_FunctionInterface {
+
     /**
      * Compiles a function.
      *

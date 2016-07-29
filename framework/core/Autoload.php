@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0.1
- * @version 1.0.1
+ * @version 1.0.2
  * 
  */
 
@@ -46,11 +46,12 @@ class Autoload {
      * Loads useful functions for the app and necesary constants.<br>
      */
     private function first(){
-        require_once 'app/config/database.php';
-        require_once 'app/config/other.php';
         require_once SYSTEM.'core/Errors.php';
+        require_once 'app/config/database.php';
+        require_once 'app/config/keys.php';
+        require_once 'app/config/filters.php';        
         require_once SYSTEM.'core/Functions.php';
-        require_once SYSTEM.'libraries/Twig/Autoloader.php';        
+        require_once SYSTEM.'libraries/Twig/Autoloader.php';            
     }
     
     /** 

@@ -10,17 +10,19 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0.1
- * @version 1.0.1
+ * @version 1.0.2
  * 
  */
 
 /**
- * 
+ * Realiza la conexión a las bases de datos relacionales.<br><br>
+ * Realizes the connection to relational databases.
  */
 class SQLConnection {
 
     /**
-     * 
+     * Realiza la conexión.<br><br>
+     * Realizes the connection.
      * @return \PDO
      */
     public function connection(){
@@ -39,44 +41,26 @@ class SQLConnection {
                 case 'pgsql':
                     $connection = new PDO(SQLSRV_DRIVER.':server=['.SQLSRV_SERVER.'];Database=['.SQLSRV_DATABASE.']', '['.SQLSRV_USER.']', '['.SQLSRV_PASSWORD.']');
                     break;
-                default:
-                    $error_db = 'app/errors/error_db.php';
-                    if(file_exists($error_db)){
-                        require_once $error_db;
-                        $error = new Error_DB();
-                        $error->connection('El gestor de base de datos no se encuentra disponible', '', '');
-                    } else {
-                        require_once realpath('../').'/'.$error_db;
-                        $error = new Error_DB();
-                        $error->connection('El gestor de base de datos no se encuentra disponible', '', '');
-                    }
+                default:                    
+                    $error = new ErrorDB();
+                    $error->connection('El gestor de base de datos no se encuentra disponible.', '', '');
                     break;
             }
             $connection->exec('set names utf8');
             $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch(PDOException $e){
-            $error_db = 'app/errors/error_db.php';
-            if(file_exists($error_db)){
-                require_once $error_db;
-                $error = new Error_DB();
-                $error->connection($e->getMessage(), $e->getFile(), $e->getTrace());
-            } else {
-                require_once realpath('../').'/'.$error_db;
-                $error = new Error_DB();
-                $error->connection($e->getMessage(), $e->getFile(), $e->getTrace());
-            }
+            ErrorDB::connection($e->getMessage(), $e->getFile(), $e->getTrace());
         }
         return $connection;
     }
 
     /**
-     * 
+     * Controla las excepciones que puedan suceder mientras se realiza la conexión.<br><br>
+     * Controlles the exceptions that can happens while it realizes the connection.
      * @param PDOException $e
      */
     public function exception(PDOException $e){
-        require_once 'app/errors/error_db.php';
-        $error = new Error_DB();
-        $error->query($e->getMessage(), $e->getFile(), $e->getTrace());
+        ErrorDB::query($e->getMessage(), $e->getFile(), $e->getTrace());
     }
     
 }

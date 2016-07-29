@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0.1
+ * @version 1.0.2
  * 
  */
 
@@ -38,6 +38,18 @@ class Input {
      */
     public static function post($post){
         return $_POST[$post];
+    }
+    
+    /**
+     * Recibe una variable de tipo $_FILES[$name] y crea una instancia de la clase 'Upload' que devuelve todos sus atributos necesarios.<br><br>
+     * Get a variable of type $_FILES[$name] and creates an instance of the 'Upload' class that returns all necessary attributes.
+     * @param string $name Nombre de $_FILES[$name].<br>Name $_FILES[$name].
+     * @return \Upload Instancia de la clase 'Upload'.<br>Instance of the 'Upload' class.
+     * @since 1.0.2
+     */
+    public static function file($name){
+        $file = $_FILES[$name];
+        return (isset($file)) ? new Upload($file) : false;
     }
     
     /**

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -21,24 +20,21 @@
  * @package    twig
  * @author     Fabien Potencier <fabien@symfony.com>
  */
-class Twig_ExpressionParser
-{
+class Twig_ExpressionParser {
     const OPERATOR_LEFT = 1;
     const OPERATOR_RIGHT = 2;
-
+    
     protected $parser;
     protected $unaryOperators;
     protected $binaryOperators;
 
-    public function __construct(Twig_Parser $parser, array $unaryOperators, array $binaryOperators)
-    {
+    public function __construct(Twig_Parser $parser, array $unaryOperators, array $binaryOperators) {
         $this->parser = $parser;
         $this->unaryOperators = $unaryOperators;
         $this->binaryOperators = $binaryOperators;
     }
 
-    public function parseExpression($precedence = 0)
-    {
+    public function parseExpression($precedence = 0) {
         $expr = $this->getPrimary();
         $token = $this->parser->getCurrentToken();
         while ($this->isBinary($token) && $this->binaryOperators[$token->getValue()]['precedence'] >= $precedence) {
@@ -63,8 +59,7 @@ class Twig_ExpressionParser
         return $expr;
     }
 
-    protected function getPrimary()
-    {
+    protected function getPrimary() {
         $token = $this->parser->getCurrentToken();
 
         if ($this->isUnary($token)) {
@@ -85,8 +80,7 @@ class Twig_ExpressionParser
         return $this->parsePrimaryExpression();
     }
 
-    protected function parseConditionalExpression($expr)
-    {
+    protected function parseConditionalExpression($expr) {
         while ($this->parser->getStream()->test(Twig_Token::PUNCTUATION_TYPE, '?')) {
             $this->parser->getStream()->next();
             $expr2 = $this->parseExpression();
@@ -99,18 +93,15 @@ class Twig_ExpressionParser
         return $expr;
     }
 
-    protected function isUnary(Twig_Token $token)
-    {
+    protected function isUnary(Twig_Token $token) {
         return $token->test(Twig_Token::OPERATOR_TYPE) && isset($this->unaryOperators[$token->getValue()]);
     }
 
-    protected function isBinary(Twig_Token $token)
-    {
+    protected function isBinary(Twig_Token $token) {
         return $token->test(Twig_Token::OPERATOR_TYPE) && isset($this->binaryOperators[$token->getValue()]);
     }
 
-    public function parsePrimaryExpression()
-    {
+    public function parsePrimaryExpression() {
         $token = $this->parser->getCurrentToken();
         switch ($token->getType()) {
             case Twig_Token::NAME_TYPE:
@@ -157,8 +148,7 @@ class Twig_ExpressionParser
         return $this->parsePostfixExpression($node);
     }
 
-    public function parseArrayExpression()
-    {
+    public function parseArrayExpression() {
         $stream = $this->parser->getStream();
         $stream->expect(Twig_Token::PUNCTUATION_TYPE, '[', 'An array element was expected');
         $elements = array();
@@ -179,8 +169,7 @@ class Twig_ExpressionParser
         return new Twig_Node_Expression_Array($elements, $stream->getCurrent()->getLine());
     }
 
-    public function parseHashExpression()
-    {
+    public function parseHashExpression() {
         $stream = $this->parser->getStream();
         $stream->expect(Twig_Token::PUNCTUATION_TYPE, '{', 'A hash element was expected');
         $elements = array();
@@ -208,8 +197,7 @@ class Twig_ExpressionParser
         return new Twig_Node_Expression_Array($elements, $stream->getCurrent()->getLine());
     }
 
-    public function parsePostfixExpression($node)
-    {
+    public function parsePostfixExpression($node) {
         $firstPass = true;
         while (true) {
             $token = $this->parser->getCurrentToken();
@@ -233,8 +221,7 @@ class Twig_ExpressionParser
         return $node;
     }
 
-    public function getFunctionNode(Twig_Node_Expression_Name $node)
-    {
+    public function getFunctionNode(Twig_Node_Expression_Name $node) {
         $args = $this->parseArguments();
 
         if ('parent' === $node->getAttribute('name')) {
@@ -260,8 +247,7 @@ class Twig_ExpressionParser
         return new Twig_Node_Expression_Function($node, $args, $node->getLine());
     }
 
-    public function parseSubscriptExpression($node)
-    {
+    public function parseSubscriptExpression($node) {
         $token = $this->parser->getStream()->next();
         $lineno = $token->getLine();
         $arguments = new Twig_Node();
@@ -269,11 +255,9 @@ class Twig_ExpressionParser
         if ($token->getValue() == '.') {
             $token = $this->parser->getStream()->next();
             if (
-                $token->getType() == Twig_Token::NAME_TYPE
-                ||
-                $token->getType() == Twig_Token::NUMBER_TYPE
-                ||
-                ($token->getType() == Twig_Token::OPERATOR_TYPE && preg_match(Twig_Lexer::REGEX_NAME, $token->getValue()))
+                    $token->getType() == Twig_Token::NAME_TYPE ||
+                    $token->getType() == Twig_Token::NUMBER_TYPE ||
+                    ($token->getType() == Twig_Token::OPERATOR_TYPE && preg_match(Twig_Lexer::REGEX_NAME, $token->getValue()))
             ) {
                 $arg = new Twig_Node_Expression_Constant($token->getValue(), $lineno);
 
@@ -296,15 +280,13 @@ class Twig_ExpressionParser
         return new Twig_Node_Expression_GetAttr($node, $arg, $arguments, $type, $lineno);
     }
 
-    public function parseFilterExpression($node)
-    {
+    public function parseFilterExpression($node) {
         $this->parser->getStream()->next();
 
         return $this->parseFilterExpressionRaw($node);
     }
 
-    public function parseFilterExpressionRaw($node, $tag = null)
-    {
+    public function parseFilterExpressionRaw($node, $tag = null) {
         while (true) {
             $token = $this->parser->getStream()->expect(Twig_Token::NAME_TYPE);
 
@@ -327,8 +309,7 @@ class Twig_ExpressionParser
         return $node;
     }
 
-    public function parseArguments()
-    {
+    public function parseArguments() {
         $args = array();
         $stream = $this->parser->getStream();
 
@@ -344,8 +325,7 @@ class Twig_ExpressionParser
         return new Twig_Node($args);
     }
 
-    public function parseAssignmentExpression()
-    {
+    public function parseAssignmentExpression() {
         $targets = array();
         while (true) {
             $token = $this->parser->getStream()->expect(Twig_Token::NAME_TYPE, null, 'Only variables can be assigned to');
@@ -363,8 +343,7 @@ class Twig_ExpressionParser
         return new Twig_Node($targets);
     }
 
-    public function parseMultitargetExpression()
-    {
+    public function parseMultitargetExpression() {
         $targets = array();
         while (true) {
             $targets[] = $this->parseExpression();
@@ -376,4 +355,5 @@ class Twig_ExpressionParser
 
         return new Twig_Node($targets);
     }
+
 }

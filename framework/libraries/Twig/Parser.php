@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -16,8 +15,7 @@
  * @package twig
  * @author  Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Parser implements Twig_ParserInterface
-{
+class Twig_Parser implements Twig_ParserInterface {
     protected $stream;
     protected $parent;
     protected $handlers;
@@ -37,13 +35,11 @@ class Twig_Parser implements Twig_ParserInterface
      *
      * @param Twig_Environment $env A Twig_Environment instance
      */
-    public function __construct(Twig_Environment $env)
-    {
+    public function __construct(Twig_Environment $env) {
         $this->env = $env;
     }
 
-    public function getVarName()
-    {
+    public function getVarName() {
         return sprintf('__internal_%s_%d', substr($this->env->getTemplateClass($this->stream->getFilename()), strlen($this->env->getTemplateClassPrefix())), ++$this->tmpVarCount);
     }
 
@@ -54,8 +50,7 @@ class Twig_Parser implements Twig_ParserInterface
      *
      * @return Twig_Node_Module A node tree
      */
-    public function parse(Twig_TokenStream $stream)
-    {
+    public function parse(Twig_TokenStream $stream) {
         $this->tmpVarCount = 0;
 
         // tag handlers
@@ -98,8 +93,7 @@ class Twig_Parser implements Twig_ParserInterface
         return $traverser->traverse($node);
     }
 
-    public function subparse($test, $dropNeedle = false)
-    {
+    public function subparse($test, $dropNeedle = false) {
         $lineno = $this->getCurrentToken()->getLine();
         $rv = array();
         while (!$this->stream->isEOF()) {
@@ -161,53 +155,43 @@ class Twig_Parser implements Twig_ParserInterface
         return new Twig_Node($rv, array(), $lineno);
     }
 
-    public function addHandler($name, $class)
-    {
+    public function addHandler($name, $class) {
         $this->handlers[$name] = $class;
     }
 
-    public function addNodeVisitor(Twig_NodeVisitorInterface $visitor)
-    {
+    public function addNodeVisitor(Twig_NodeVisitorInterface $visitor) {
         $this->visitors[] = $visitor;
     }
 
-    public function getBlockStack()
-    {
+    public function getBlockStack() {
         return $this->blockStack;
     }
 
-    public function peekBlockStack()
-    {
+    public function peekBlockStack() {
         return $this->blockStack[count($this->blockStack) - 1];
     }
 
-    public function popBlockStack()
-    {
+    public function popBlockStack() {
         array_pop($this->blockStack);
     }
 
-    public function pushBlockStack($name)
-    {
+    public function pushBlockStack($name) {
         $this->blockStack[] = $name;
     }
 
-    public function hasBlock($name)
-    {
+    public function hasBlock($name) {
         return isset($this->blocks[$name]);
     }
 
-    public function setBlock($name, $value)
-    {
+    public function setBlock($name, $value) {
         $this->blocks[$name] = $value;
     }
 
-    public function hasMacro($name)
-    {
+    public function hasMacro($name) {
         return isset($this->macros[$name]);
     }
 
-    public function setMacro($name, Twig_Node_Macro $node)
-    {
+    public function setMacro($name, Twig_Node_Macro $node) {
         if (null === $this->reservedMacroNames) {
             $this->reservedMacroNames = array();
             $r = new ReflectionClass($this->env->getBaseTemplateClass());
@@ -223,18 +207,15 @@ class Twig_Parser implements Twig_ParserInterface
         $this->macros[$name] = $node;
     }
 
-    public function addTrait($trait)
-    {
+    public function addTrait($trait) {
         $this->traits[] = $trait;
     }
 
-    public function addImportedFunction($alias, $name, Twig_Node_Expression $node)
-    {
+    public function addImportedFunction($alias, $name, Twig_Node_Expression $node) {
         $this->importedFunctions[0][$alias] = array('name' => $name, 'node' => $node);
     }
 
-    public function getImportedFunction($alias)
-    {
+    public function getImportedFunction($alias) {
         foreach ($this->importedFunctions as $functions) {
             if (isset($functions[$alias])) {
                 return $functions[$alias];
@@ -242,13 +223,11 @@ class Twig_Parser implements Twig_ParserInterface
         }
     }
 
-    public function pushLocalScope()
-    {
+    public function pushLocalScope() {
         array_unshift($this->importedFunctions, array());
     }
 
-    public function popLocalScope()
-    {
+    public function popLocalScope() {
         array_shift($this->importedFunctions);
     }
 
@@ -257,18 +236,15 @@ class Twig_Parser implements Twig_ParserInterface
      *
      * @return Twig_ExpressionParser The expression parser
      */
-    public function getExpressionParser()
-    {
+    public function getExpressionParser() {
         return $this->expressionParser;
     }
 
-    public function getParent()
-    {
+    public function getParent() {
         return $this->parent;
     }
 
-    public function setParent($parent)
-    {
+    public function setParent($parent) {
         $this->parent = $parent;
     }
 
@@ -277,8 +253,7 @@ class Twig_Parser implements Twig_ParserInterface
      *
      * @return Twig_TokenStream The token stream
      */
-    public function getStream()
-    {
+    public function getStream() {
         return $this->stream;
     }
 
@@ -287,22 +262,20 @@ class Twig_Parser implements Twig_ParserInterface
      *
      * @return Twig_Token The current token
      */
-    public function getCurrentToken()
-    {
+    public function getCurrentToken() {
         return $this->stream->getCurrent();
     }
 
-    protected function checkBodyNodes($body)
-    {
+    protected function checkBodyNodes($body) {
         // check that the body does not contain non-empty output nodes
         foreach ($body as $node) {
             if (
-                ($node instanceof Twig_Node_Text && !ctype_space($node->getAttribute('data')))
-                ||
-                (!$node instanceof Twig_Node_Text && !$node instanceof Twig_Node_BlockReference && $node instanceof Twig_NodeOutputInterface)
+                    ($node instanceof Twig_Node_Text && !ctype_space($node->getAttribute('data'))) ||
+                    (!$node instanceof Twig_Node_Text && !$node instanceof Twig_Node_BlockReference && $node instanceof Twig_NodeOutputInterface)
             ) {
                 throw new Twig_Error_Syntax(sprintf('A template that extends another one cannot have a body (%s).', $node), $node->getLine());
             }
         }
     }
+
 }

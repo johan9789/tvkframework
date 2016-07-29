@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -15,10 +14,9 @@
  * @package twig
  * @author  Fabien Potencier <fabien@symfony.com>
  */
-interface Twig_TemplateInterface
-{
-    const ANY_CALL    = 'any';
-    const ARRAY_CALL  = 'array';
+interface Twig_TemplateInterface {
+    const ANY_CALL = 'any';
+    const ARRAY_CALL = 'array';
     const METHOD_CALL = 'method';
 
     /**

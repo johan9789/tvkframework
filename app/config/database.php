@@ -10,6 +10,7 @@
  */
 define('FETCH_SQL', PDO::FETCH_CLASS);
 define('DEFAULT_SQL', 'mysql');
+define('ERR_MODE', true);
 
 /**
  * Escoge un servidor de base de datos.

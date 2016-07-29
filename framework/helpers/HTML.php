@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0.1
+ * @version 1.0.2
  * 
  */
 
@@ -30,8 +30,7 @@ class HTML {
     public static function style($href, $assets_url = true){
         $style = '<link type="text/css" ';
         if($assets_url == true){
-            // $style.= 'href="'.assets_url($href).'" ';
-            $style.= 'href="'.App::assets($href).'" ';
+            $style.= 'href="'.URL::assets($href).'" ';
         } elseif($assets_url == false){
             $style.= 'href="'.$href.'" ';
         }
@@ -49,10 +48,9 @@ class HTML {
      */
     public static function script($src, $assets_url = true){
         $script = '<script type="text/javascript" ';
-        if($assets_url == true){
-            //$script.= 'src="'.assets_url($src).'">';
-            $script.= 'src="'.App::assets($src).'">';
-        } elseif($assets_url == false){
+        if($assets_url){
+            $script.= 'src="'.URL::assets($src).'">';
+        } else {
             $script.= 'src="'.$src.'">';
         }
         $script.= '</script>';
@@ -69,19 +67,14 @@ class HTML {
      * @param string $base_url Sólo poner false si se dirigirá a otra página externa.<br>Only write false if redirect to another external page.
      * @return string La etiqueta <a> terminada.<br>The finished <a> tag.
      */
-    public static function link($href, $text, array $other = null, $base_url = true){
+    public static function link($href, $text, array $other = array(), $base_url = true){
         if($base_url == true){
-            // $href = base_url($href);
-            $href = App::base($href);
+            $href = URL::to($href);
         }
-        $link = '<a href="'.$href.'"';
-        if(is_null($other)){
-            $link.= '';
-        } else {
-            foreach($other as $attr => $value){                
-                $link.= ' '.$attr.'="'.$value.'"';
-            }
-        }
+        $link = '<a href="'.$href.'"';        
+        foreach($other as $attr => $value){
+            $link.= ' '.$attr.'="'.$value.'"';
+        }        
         $link.= '>';
         $link.= $text;
         $link.= '</a>';
@@ -95,14 +88,15 @@ class HTML {
      * @param array $other Otros atributos para la etiqueta.<br>Other attributes to tag.
      * @return string La etiqueta <img> terminada.<br>The finished <img> tag.
      */
-    public static function image($src = '', array $other = null){
-        $image = '<img src="'.$src.'"';
-        if(is_null($other)){
-            $image.= '';
+    public static function image($src = '', array $other = array(), $assets_url = true){
+        $image = '<img ';        
+        if($assets_url){
+            $image.= 'src="'.URL::assets($src).'"';
         } else {
-            foreach($other as $attr => $value){
-                $image.= ' '.$attr.'="'.$value.'"';
-            }
+            $image.= 'src="'.$src.'"';
+        }
+        foreach($other as $attr => $value){
+            $image.= ' '.$attr.'="'.$value.'"';
         }
         $image.= '>';
         return $image;

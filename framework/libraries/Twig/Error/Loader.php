@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -15,6 +14,4 @@
  * @package    twig
  * @author     Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Error_Loader extends Twig_Error
-{
-}
+class Twig_Error_Loader extends Twig_Error {}

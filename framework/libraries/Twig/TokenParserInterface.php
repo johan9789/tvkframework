@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -15,8 +14,8 @@
  * @package twig
  * @author  Fabien Potencier <fabien@symfony.com>
  */
-interface Twig_TokenParserInterface
-{
+interface Twig_TokenParserInterface {
+
     /**
      * Sets the parser associated with this token parser
      *

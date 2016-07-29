@@ -21,7 +21,7 @@ class Home extends ExtraController {
     }
     
     public function lang(){
-        App::not_post('', true, 'extra');
+        Request::post('', true, 'extra');
         Session::start();
         $lang = Input::post('lang');
         Session::set('xlangxlang', $lang);

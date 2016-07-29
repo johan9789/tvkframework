@@ -6,7 +6,7 @@ class Crud extends ExtraController {
     }
     
     public function create_active_record(){
-        App::not_post('Error', true, 'extra/start/crud');
+        Request::post('Error', true, 'extra/start/crud');
         require 'system/config/config.php';
         require 'system/config/lang.php';
         

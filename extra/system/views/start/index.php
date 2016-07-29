@@ -12,9 +12,9 @@
     </header>
     <section>            
         <br><br>
-        <h3><span class="show_crud_act_rec" style="cursor: pointer;"><?php echo $xlang['welcome']; ?></span></h3>
+        <h3><span class="show_crud_act_rec" style="cursor: pointer;"><?php write($xlang['welcome']); ?></span></h3>
         <br><br>
-        <h3><?php echo $xlang['version']; ?></h3>
+        <h3><?php write($xlang['version']); ?></h3>
     </section>
     <br><br><br>
 </div>

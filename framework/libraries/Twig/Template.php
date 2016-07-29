@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -16,10 +15,8 @@
  * @package twig
  * @author  Fabien Potencier <fabien@symfony.com>
  */
-abstract class Twig_Template implements Twig_TemplateInterface
-{
+abstract class Twig_Template implements Twig_TemplateInterface {
     static protected $cache = array();
-
     protected $env;
     protected $blocks;
 
@@ -28,8 +25,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
      *
      * @param Twig_Environment $env A Twig_Environment instance
      */
-    public function __construct(Twig_Environment $env)
-    {
+    public function __construct(Twig_Environment $env) {
         $this->env = $env;
         $this->blocks = array();
     }
@@ -39,8 +35,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
      *
      * @return string The template name
      */
-    public function getTemplateName()
-    {
+    public function getTemplateName() {
         return null;
     }
 
@@ -49,8 +44,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
      *
      * @return Twig_Environment The Twig environment
      */
-    public function getEnvironment()
-    {
+    public function getEnvironment() {
         return $this->env;
     }
 
@@ -59,8 +53,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
      *
      * @return Twig_TemplateInterface|false The parent template or false if there is no parent
      */
-    public function getParent(array $context)
-    {
+    public function getParent(array $context) {
         return false;
     }
 
@@ -71,8 +64,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
      * @param array  $context The context
      * @param array  $blocks  The current set of blocks
      */
-    public function displayParentBlock($name, array $context, array $blocks = array())
-    {
+    public function displayParentBlock($name, array $context, array $blocks = array()) {
         if (false !== $parent = $this->getParent($context)) {
             $parent->displayBlock($name, $context, $blocks);
         } else {
@@ -87,8 +79,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
      * @param array  $context The context
      * @param array  $blocks  The current set of blocks
      */
-    public function displayBlock($name, array $context, array $blocks = array())
-    {
+    public function displayBlock($name, array $context, array $blocks = array()) {
         if (isset($blocks[$name])) {
             $b = $blocks;
             unset($b[$name]);
@@ -109,8 +100,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
      *
      * @return string The rendered block
      */
-    public function renderParentBlock($name, array $context, array $blocks = array())
-    {
+    public function renderParentBlock($name, array $context, array $blocks = array()) {
         ob_start();
         $this->displayParentBlock($name, $context, $blocks);
 
@@ -126,8 +116,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
      *
      * @return string The rendered block
      */
-    public function renderBlock($name, array $context, array $blocks = array())
-    {
+    public function renderBlock($name, array $context, array $blocks = array()) {
         ob_start();
         $this->displayBlock($name, $context, $blocks);
 
@@ -141,8 +130,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
      *
      * @return Boolean true if the block exists, false otherwise
      */
-    public function hasBlock($name)
-    {
+    public function hasBlock($name) {
         return isset($this->blocks[$name]);
     }
 
@@ -151,8 +139,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
      *
      * @return array An array of block names
      */
-    public function getBlockNames()
-    {
+    public function getBlockNames() {
         return array_keys($this->blocks);
     }
 
@@ -161,8 +148,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
      *
      * @return array An array of blocks
      */
-    public function getBlocks()
-    {
+    public function getBlocks() {
         return $this->blocks;
     }
 
@@ -172,8 +158,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
      * @param array $context An array of parameters to pass to the template
      * @param array $blocks  An array of blocks to pass to the template
      */
-    public function display(array $context, array $blocks = array())
-    {
+    public function display(array $context, array $blocks = array()) {
         try {
             $this->doDisplay($context, $blocks);
         } catch (Twig_Error $e) {
@@ -190,8 +175,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
      *
      * @return string The rendered template
      */
-    public function render(array $context)
-    {
+    public function render(array $context) {
         $level = ob_get_level();
         ob_start();
         try {
@@ -225,8 +209,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
      *
      * @throws Twig_Error_Runtime if the variable does not exist and Twig is running in strict mode
      */
-    protected function getContext($context, $item)
-    {
+    protected function getContext($context, $item) {
         if (!array_key_exists($item, $context)) {
             if (!$this->env->isStrictVariables()) {
                 return null;
@@ -247,12 +230,10 @@ abstract class Twig_Template implements Twig_TemplateInterface
      * @param string  $type          The type of attribute (@see Twig_TemplateInterface)
      * @param Boolean $isDefinedTest Whether this is only a defined check
      */
-    protected function getAttribute($object, $item, array $arguments = array(), $type = Twig_TemplateInterface::ANY_CALL, $isDefinedTest = false)
-    {
+    protected function getAttribute($object, $item, array $arguments = array(), $type = Twig_TemplateInterface::ANY_CALL, $isDefinedTest = false) {
         // array
         if (Twig_TemplateInterface::METHOD_CALL !== $type) {
-            if ((is_array($object) && array_key_exists($item, $object))
-                || ($object instanceof ArrayAccess && isset($object[$item]))
+            if ((is_array($object) && array_key_exists($item, $object)) || ($object instanceof ArrayAccess && isset($object[$item]))
             ) {
                 if ($isDefinedTest) {
                     return true;
@@ -272,7 +253,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
 
                 if (is_object($object)) {
                     throw new Twig_Error_Runtime(sprintf('Key "%s" in object (with ArrayAccess) of type "%s" does not exist', $item, get_class($object)));
-                // array
+                    // array
                 } else {
                     throw new Twig_Error_Runtime(sprintf('Key "%s" for array with keys "%s" does not exist', $item, implode(', ', array_keys($object))));
                 }
@@ -307,8 +288,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
 
         // object property
         if (Twig_TemplateInterface::METHOD_CALL !== $type) {
-            if (isset(self::$cache[$class]['properties'][$item])
-                || isset($object->$item) || array_key_exists($item, $object)
+            if (isset(self::$cache[$class]['properties'][$item]) || isset($object->$item) || array_key_exists($item, $object)
             ) {
                 if ($isDefinedTest) {
                     return true;
@@ -326,10 +306,10 @@ abstract class Twig_Template implements Twig_TemplateInterface
         $lcItem = strtolower($item);
         if (isset(self::$cache[$class]['methods'][$lcItem])) {
             $method = $item;
-        } elseif (isset(self::$cache[$class]['methods']['get'.$lcItem])) {
-            $method = 'get'.$item;
-        } elseif (isset(self::$cache[$class]['methods']['is'.$lcItem])) {
-            $method = 'is'.$item;
+        } elseif (isset(self::$cache[$class]['methods']['get' . $lcItem])) {
+            $method = 'get' . $item;
+        } elseif (isset(self::$cache[$class]['methods']['is' . $lcItem])) {
+            $method = 'is' . $item;
         } elseif (isset(self::$cache[$class]['methods']['__call'])) {
             $method = $item;
         } else {
@@ -360,4 +340,5 @@ abstract class Twig_Template implements Twig_TemplateInterface
 
         return $ret;
     }
+
 }

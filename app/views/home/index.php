@@ -5,7 +5,7 @@
             <div class="page-header">
                 <h1>
                     <and id="bienvenido">Bienvenido :D</and>
-                    <?php echo Form::select('', $lang, false, ['id' => 'lang']); ?>
+                    <?php write(Form::select('', $lang, false, ['id' => 'lang'])); ?>
                 </h1>
             </div>
             <h3 id="descripcion">
@@ -14,7 +14,7 @@
                 pero no sé por qué si solo lo uso yo y nadie más). Lo hice por aprender y también por diversión.
                 Así que, disfrútalo (si es que lo llegas a usar...) :D
             </h3>
-            <h4><and id="estas">Estás aquí :D</and> app/controllers/home.php </h4>
+            <h4><and id="estas">Estás aquí :D</and> <?php write($file_name); ?></h4>
             <?php highlight_string($file); ?>
         </div>
     </div>

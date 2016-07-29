@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -8,15 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class Twig_Extension_Sandbox extends Twig_Extension
-{
+
+class Twig_Extension_Sandbox extends Twig_Extension {
     protected $sandboxedGlobally;
     protected $sandboxed;
     protected $policy;
 
-    public function __construct(Twig_Sandbox_SecurityPolicyInterface $policy, $sandboxed = false)
-    {
-        $this->policy            = $policy;
+    public function __construct(Twig_Sandbox_SecurityPolicyInterface $policy, $sandboxed = false) {
+        $this->policy = $policy;
         $this->sandboxedGlobally = $sandboxed;
     }
 
@@ -25,8 +23,7 @@ class Twig_Extension_Sandbox extends Twig_Extension
      *
      * @return array An array of Twig_TokenParserInterface or Twig_TokenParserBrokerInterface instances
      */
-    public function getTokenParsers()
-    {
+    public function getTokenParsers() {
         return array(new Twig_TokenParser_Sandbox());
     }
 
@@ -35,64 +32,53 @@ class Twig_Extension_Sandbox extends Twig_Extension
      *
      * @return array An array of Twig_NodeVisitorInterface instances
      */
-    public function getNodeVisitors()
-    {
+    public function getNodeVisitors() {
         return array(new Twig_NodeVisitor_Sandbox());
     }
 
-    public function enableSandbox()
-    {
+    public function enableSandbox() {
         $this->sandboxed = true;
     }
 
-    public function disableSandbox()
-    {
+    public function disableSandbox() {
         $this->sandboxed = false;
     }
 
-    public function isSandboxed()
-    {
+    public function isSandboxed() {
         return $this->sandboxedGlobally || $this->sandboxed;
     }
 
-    public function isSandboxedGlobally()
-    {
+    public function isSandboxedGlobally() {
         return $this->sandboxedGlobally;
     }
 
-    public function setSecurityPolicy(Twig_Sandbox_SecurityPolicyInterface $policy)
-    {
+    public function setSecurityPolicy(Twig_Sandbox_SecurityPolicyInterface $policy) {
         $this->policy = $policy;
     }
 
-    public function getSecurityPolicy()
-    {
+    public function getSecurityPolicy() {
         return $this->policy;
     }
 
-    public function checkSecurity($tags, $filters, $functions)
-    {
+    public function checkSecurity($tags, $filters, $functions) {
         if ($this->isSandboxed()) {
             $this->policy->checkSecurity($tags, $filters, $functions);
         }
     }
 
-    public function checkMethodAllowed($obj, $method)
-    {
+    public function checkMethodAllowed($obj, $method) {
         if ($this->isSandboxed()) {
             $this->policy->checkMethodAllowed($obj, $method);
         }
     }
 
-    public function checkPropertyAllowed($obj, $method)
-    {
+    public function checkPropertyAllowed($obj, $method) {
         if ($this->isSandboxed()) {
             $this->policy->checkPropertyAllowed($obj, $method);
         }
     }
 
-    public function ensureToStringAllowed($obj)
-    {
+    public function ensureToStringAllowed($obj) {
         if (is_object($obj)) {
             $this->policy->checkMethodAllowed($obj, '__toString');
         }
@@ -105,8 +91,8 @@ class Twig_Extension_Sandbox extends Twig_Extension
      *
      * @return string The extension name
      */
-    public function getName()
-    {
+    public function getName() {
         return 'sandbox';
     }
+
 }

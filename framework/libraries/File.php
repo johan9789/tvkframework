@@ -10,44 +10,48 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0.1
+ * @version 1.0.2
  * 
  */
 
 /**
- * 
+ * Clase hecha para el manejo de archivos externos o internos en la aplicación.<br><br>
+ * Class made ​​for handling external or internal files in the app.
  */
 class File {
     
     /**
-     * 
-     * @param type $file
-     * @return boolean
+     * Abre un archivo y muestra su contenido.<br><br>
+     * Opens a file and displays its contents.
+     * @param string $file Ruta del archivo.<br>File Path.
+     * @param boolean $nl2br Poner 'true' si se desea agregar saltos de línea extras.<br>Put 'true' if you want to add extra line breaks.
+     * @return boolean Si el archivo no existe devuelve 'false'. Si sí existe devuelve el contenido del archivo.<br>If the file does not exist it returns false. If it exists returns the file contents.
      */
     public static function open($file, $nl2br = false){
         if(!file_exists($file)){
             return false;
-        }
-        $fx = fopen($file, 'r');
-        $ready = '';
-        while(!feof($fx)){
-            $get = fgets($fx);
-            if($nl2br){
-                $n = nl2br($get);
-                $ready.= $n;
-            } elseif(!$nl2br){
-                $ready.= $get;
+        } else {
+            $fx = fopen($file, 'r');
+            $ready = '';
+            while(!feof($fx)){
+                $get = fgets($fx);
+                if($nl2br){
+                    $n = nl2br($get);
+                    $ready.= $n;
+                } else {
+                    $ready.= $get;
+                }
             }
+            fclose($fx);
+            return $ready;
         }
-        fclose($fx);
-        return $ready;
     }
     
     /**
-     * 
-     * @param type $file
-     * @param type $content
-     * @return boolean
+     * Crea un nuevo archivo.<br><br>
+     * Create a new file.
+     * @param string $file Ruta del archivo.<br>File Path.
+     * @param mixed $content Contenido que tendrá el archivo.<br>Content that the file will have.
      */
     public static function create($file, $content){
         $fx = fopen($file, 'a');
@@ -56,19 +60,21 @@ class File {
     }
         
     /**
-     * 
-     * @param type $file
-     * @param type $content
-     * @return boolean
+     * Sobreescribe / edita un archivo.<br><br>
+     * Overwrite / edit a file.
+     * @param string $file Ruta del archivo.<br>File Path.
+     * @param mixed $content Contenido del archivo que será sobreescrito / modificado.<br>File contents that will be overwritten / modified.
+     * @return boolean Si el archivo no existe devuelve 'false'. Si sí existe devuelve el contenido del archivo.<br>If the file does not exist it returns false. If it exists returns 'true'.
      */
     public static function overwrite($file, $content){
         if(!file_exists($file)){
             return false;
+        } else {
+            $fx = fopen($file, 'w');
+            fwrite($fx, $content);
+            fclose($fx);
+            return true;
         }
-        $fx = fopen($file, 'w');
-        fwrite($fx, $content);
-        fclose($fx);
-        return true;
     }
     
 }

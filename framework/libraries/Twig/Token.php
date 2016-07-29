@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -16,22 +15,21 @@
  * @package twig
  * @author  Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Token
-{
+class Twig_Token {
     protected $value;
     protected $type;
     protected $lineno;
 
-    const EOF_TYPE         = -1;
-    const TEXT_TYPE        = 0;
+    const EOF_TYPE = -1;
+    const TEXT_TYPE = 0;
     const BLOCK_START_TYPE = 1;
-    const VAR_START_TYPE   = 2;
-    const BLOCK_END_TYPE   = 3;
-    const VAR_END_TYPE     = 4;
-    const NAME_TYPE        = 5;
-    const NUMBER_TYPE      = 6;
-    const STRING_TYPE      = 7;
-    const OPERATOR_TYPE    = 8;
+    const VAR_START_TYPE = 2;
+    const BLOCK_END_TYPE = 3;
+    const VAR_END_TYPE = 4;
+    const NAME_TYPE = 5;
+    const NUMBER_TYPE = 6;
+    const STRING_TYPE = 7;
+    const OPERATOR_TYPE = 8;
     const PUNCTUATION_TYPE = 9;
 
     /**
@@ -41,10 +39,9 @@ class Twig_Token
      * @param string  $value  The token value
      * @param integer $lineno The line position in the source
      */
-    public function __construct($type, $value, $lineno)
-    {
-        $this->type   = $type;
-        $this->value  = $value;
+    public function __construct($type, $value, $lineno) {
+        $this->type = $type;
+        $this->value = $value;
         $this->lineno = $lineno;
     }
 
@@ -53,8 +50,7 @@ class Twig_Token
      *
      * @return string A string representation of the token
      */
-    public function __toString()
-    {
+    public function __toString() {
         return sprintf('%s(%s)', self::typeToString($this->type, true, $this->lineno), $this->value);
     }
 
@@ -71,18 +67,17 @@ class Twig_Token
      *
      * @return Boolean
      */
-    public function test($type, $values = null)
-    {
+    public function test($type, $values = null) {
         if (null === $values && !is_int($type)) {
             $values = $type;
             $type = self::NAME_TYPE;
         }
 
         return ($this->type === $type) && (
-            null === $values ||
-            (is_array($values) && in_array($this->value, $values)) ||
-            $this->value == $values
-        );
+                null === $values ||
+                (is_array($values) && in_array($this->value, $values)) ||
+                $this->value == $values
+                );
     }
 
     /**
@@ -90,8 +85,7 @@ class Twig_Token
      *
      * @return integer The source line
      */
-    public function getLine()
-    {
+    public function getLine() {
         return $this->lineno;
     }
 
@@ -100,8 +94,7 @@ class Twig_Token
      *
      * @return integer The token type
      */
-    public function getType()
-    {
+    public function getType() {
         return $this->type;
     }
 
@@ -110,8 +103,7 @@ class Twig_Token
      *
      * @return string The token value
      */
-    public function getValue()
-    {
+    public function getValue() {
         return $this->value;
     }
 
@@ -123,8 +115,7 @@ class Twig_Token
      *
      * @return string The string representation
      */
-    static public function typeToString($type, $short = false, $line = -1)
-    {
+    static public function typeToString($type, $short = false, $line = -1) {
         switch ($type) {
             case self::EOF_TYPE:
                 $name = 'EOF_TYPE';
@@ -163,7 +154,7 @@ class Twig_Token
                 throw new Twig_Error_Syntax(sprintf('Token of type "%s" does not exist.', $type), $line);
         }
 
-        return $short ? $name : 'Twig_Token::'.$name;
+        return $short ? $name : 'Twig_Token::' . $name;
     }
 
     /**
@@ -174,8 +165,7 @@ class Twig_Token
      *
      * @return string The string representation
      */
-    static public function typeToEnglish($type, $line = -1)
-    {
+    static public function typeToEnglish($type, $line = -1) {
         switch ($type) {
             case self::EOF_TYPE:
                 return 'end of template';
@@ -203,4 +193,5 @@ class Twig_Token
                 throw new Twig_Error_Syntax(sprintf('Token of type "%s" does not exist.', $type), $line);
         }
     }
+
 }

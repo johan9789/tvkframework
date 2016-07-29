@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0.1
+ * @version 1.0.2
  * 
  */
 
@@ -26,5 +26,6 @@ Autoload::start();
  * Inicia toda la aplicación.
  * Starts entire application.
  */
-$app = new Bootstrap();
+
+$app = new App();
 $app->start();

@@ -12,7 +12,7 @@
 <div class="navbar navbar-default navbar-static-top bsnavbar" style="background-color: red;">
     <div class="container">
         <div class="navbar-header">
-            <?php echo HTML::link('', "<h1>TvK Framework 1.0.1</h1>", ['class' => 'navbar-brand']); ?>
+            <?php echo HTML::link('', "<h1>TvK Framework 1.0.2</h1>", ['class' => 'navbar-brand']); ?>
         </div>
         <div class="collapse navbar-collapse"></div>
     </div>

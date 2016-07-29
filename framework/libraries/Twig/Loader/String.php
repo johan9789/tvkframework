@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -20,8 +19,8 @@
  * @package    twig
  * @author     Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Loader_String implements Twig_LoaderInterface
-{
+class Twig_Loader_String implements Twig_LoaderInterface {
+
     /**
      * Gets the source code of a template, given its name.
      *
@@ -29,8 +28,7 @@ class Twig_Loader_String implements Twig_LoaderInterface
      *
      * @return string The template source code
      */
-    public function getSource($name)
-    {
+    public function getSource($name) {
         return $name;
     }
 
@@ -41,8 +39,7 @@ class Twig_Loader_String implements Twig_LoaderInterface
      *
      * @return string The cache key
      */
-    public function getCacheKey($name)
-    {
+    public function getCacheKey($name) {
         return $name;
     }
 
@@ -52,8 +49,8 @@ class Twig_Loader_String implements Twig_LoaderInterface
      * @param string    $name The template name
      * @param timestamp $time The last modification time of the cached template
      */
-    public function isFresh($name, $time)
-    {
+    public function isFresh($name, $time) {
         return true;
     }
+
 }

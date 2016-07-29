@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -15,17 +14,15 @@
  * @package    twig
  * @author     Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Markup
-{
+class Twig_Markup {
     protected $content;
 
-    public function __construct($content)
-    {
+    public function __construct($content) {
         $this->content = (string) $content;
     }
 
-    public function __toString()
-    {
+    public function __toString() {
         return $this->content;
     }
+
 }

@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0.1
+ * @version 1.0.2
  * 
  */
 
@@ -26,7 +26,7 @@ class Redirect {
      * @param string $url URL.
      */
     public static function to($url = ''){
-        header('Location: '.App::base($url));
+        header('Location: '.URL::to($url));
         exit();
     }
 
@@ -37,7 +37,7 @@ class Redirect {
      */
     public static function top($url = ''){
         echo '<script type="text/javascript">';
-        echo 'top.location.href="'.App::base($url).'";';
+        echo 'top.location.href="'.URL::to($url).'";';
         echo '</script>';
         exit();
     }

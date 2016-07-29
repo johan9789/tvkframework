@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -15,8 +14,8 @@
  * @package    twig
  * @author     Fabien Potencier <fabien@symfony.com>
  */
-interface Twig_LoaderInterface
-{
+interface Twig_LoaderInterface {
+
     /**
      * Gets the source code of a template, given its name.
      *

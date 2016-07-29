@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title><?php echo $xlang['ver_form_gen'] ?></title>
+<title><?php write($xlang['ver_form_gen']); ?></title>
 <meta charset="UTF8">
 <style type="text/css">
 body {
@@ -20,7 +20,7 @@ body {
 </head>
 <body>
 
-<h3 id="tt"><i><?php echo $xlang['ver_form_info'].': app/generated/forms/'.Session::get('tvk_created_form_path'); ?></i></h3>
+<h3 id="tt"><i><?php write($xlang['ver_form_info'].': app/generated/forms/'.Session::get('tvk_created_form_path')); ?></i></h3>
 
 <table>
     <tr id="tt2">

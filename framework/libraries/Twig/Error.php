@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -15,8 +14,7 @@
  * @package    twig
  * @author     Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Error extends Exception
-{
+class Twig_Error extends Exception {
     protected $lineno;
     protected $filename;
     protected $rawMessage;
@@ -30,8 +28,7 @@ class Twig_Error extends Exception
      * @param string    $filename The template file name where the error occurred
      * @param Exception $previous The previous exception
      */
-    public function __construct($message, $lineno = -1, $filename = null, Exception $previous = null)
-    {
+    public function __construct($message, $lineno = -1, $filename = null, Exception $previous = null) {
         if (-1 === $lineno || null === $filename) {
             list($lineno, $filename) = $this->findTemplateInfo(null !== $previous ? $previous : $this, $lineno, $filename);
         }
@@ -55,8 +52,7 @@ class Twig_Error extends Exception
      *
      * @return string The raw message
      */
-    public function getRawMessage()
-    {
+    public function getRawMessage() {
         return $this->rawMessage;
     }
 
@@ -65,8 +61,7 @@ class Twig_Error extends Exception
      *
      * @return string The filename
      */
-    public function getTemplateFile()
-    {
+    public function getTemplateFile() {
         return $this->filename;
     }
 
@@ -75,8 +70,7 @@ class Twig_Error extends Exception
      *
      * @param string $filename The filename
      */
-    public function setTemplateFile($filename)
-    {
+    public function setTemplateFile($filename) {
         $this->filename = $filename;
 
         $this->updateRepr();
@@ -87,8 +81,7 @@ class Twig_Error extends Exception
      *
      * @return integer The template line
      */
-    public function getTemplateLine()
-    {
+    public function getTemplateLine() {
         return $this->lineno;
     }
 
@@ -97,8 +90,7 @@ class Twig_Error extends Exception
      *
      * @param integer $lineno The template line
      */
-    public function setTemplateLine($lineno)
-    {
+    public function setTemplateLine($lineno) {
         $this->lineno = $lineno;
 
         $this->updateRepr();
@@ -112,8 +104,7 @@ class Twig_Error extends Exception
      *
      * @return Exception The previous exception or null
      */
-    public function __call($method, $arguments)
-    {
+    public function __call($method, $arguments) {
         if ('getprevious' == strtolower($method)) {
             return $this->previous;
         }
@@ -121,8 +112,7 @@ class Twig_Error extends Exception
         throw new BadMethodCallException(sprintf('Method "Twig_Error::%s()" does not exist.', $method));
     }
 
-    protected function updateRepr()
-    {
+    protected function updateRepr() {
         $this->message = $this->rawMessage;
 
         $dot = false;
@@ -144,8 +134,7 @@ class Twig_Error extends Exception
         }
     }
 
-    protected function findTemplateInfo(Exception $e, $currentLine, $currentFile)
-    {
+    protected function findTemplateInfo(Exception $e, $currentLine, $currentFile) {
         if (!function_exists('token_get_all')) {
             return array($currentLine, $currentFile);
         }
@@ -192,4 +181,5 @@ class Twig_Error extends Exception
 
         return array($currentLine, $currentFile);
     }
+
 }

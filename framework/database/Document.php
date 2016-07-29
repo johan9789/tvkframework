@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0.1
+ * @version 1.0.2
  * 
  */
 
@@ -19,7 +19,15 @@
  * Created class for can use the NoSQL database MongoDB.
  */
 class Document {
+    /**
+     * MongoConnection
+     * @var mixed  MongoConnection
+     */
     private $mongo;
+    /**
+     * Connection
+     * @var mixed Connection
+     */
     private $connection;
     /**
      * Variable que contiene la base de datos.<br><br>

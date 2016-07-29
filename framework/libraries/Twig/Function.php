@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -15,30 +14,25 @@
  * @package    twig
  * @author     Fabien Potencier <fabien@symfony.com>
  */
-abstract class Twig_Function implements Twig_FunctionInterface
-{
+abstract class Twig_Function implements Twig_FunctionInterface {
     protected $options;
 
-    public function __construct(array $options = array())
-    {
+    public function __construct(array $options = array()) {
         $this->options = array_merge(array(
             'needs_environment' => false,
-            'needs_context'     => false,
-        ), $options);
+            'needs_context' => false,
+                ), $options);
     }
 
-    public function needsEnvironment()
-    {
+    public function needsEnvironment() {
         return $this->options['needs_environment'];
     }
 
-    public function needsContext()
-    {
+    public function needsContext() {
         return $this->options['needs_context'];
     }
 
-    public function getSafe(Twig_Node $functionArgs)
-    {
+    public function getSafe(Twig_Node $functionArgs) {
         if (isset($this->options['is_safe'])) {
             return $this->options['is_safe'];
         }
@@ -49,4 +43,5 @@ abstract class Twig_Function implements Twig_FunctionInterface
 
         return array();
     }
+
 }

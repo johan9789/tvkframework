@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0.1
+ * @version 1.0.2
  * 
  */
 
@@ -18,8 +18,16 @@
  * Realiza consultas a las bases de datos relacionales.<br><br>
  * Realizes queries to relational databases.
  */
-class Relational {    
+class Relational {
+    /**
+     * PDO
+     * @var mixed new PDO(...);
+     */
     private $pdo;
+    /**
+     * Conexión | Connection.
+     * @var mixed new PDO(...)->connection('ejemplo | example');
+     */
     private $connection;    
     
     /**
@@ -43,9 +51,9 @@ class Relational {
     /**
      * Realiza una consulta y devuelve los resultados.<br><br>
      * Realizes a query and returns the results.
-     * @param type $sql
-     * @param array $array
-     * @return type
+     * @param string $sql La consulta.<br>The query.
+     * @param array $data Datos a limpiar.<br>Data to clean.
+     * @return array Datos devueltos.<br>Returned data.
      */
     public function query($sql, array $data = array()){
         try {
@@ -63,9 +71,9 @@ class Relational {
     /**
      * Cuenta los resultados de una consulta.<br><br>
      * Counts results of query. 
-     * @param type $sql
-     * @param array $data
-     * @return type
+     * @param string $sql La consulta.<br>The query.
+     * @param array $data Datos a limpiar.<br>Data to clean.
+     * @return int Cantidad de resultados.<br>Number of results.
      */
     public function query_row_count($sql, array $data = array()){
         try {
@@ -78,9 +86,10 @@ class Relational {
     }
     
     /**
-     * 
-     * @param type $sql
-     * @param array $data
+     * Ejecuta una consulta que no devuelve datos.<br><br>
+     * Executes a query that returns no data.
+     * @param string $sql La consulta.<br>The query.
+     * @param array $data Datos a limpiar.<br>Data to clean.
      */
     public function statement($sql, array $data = array()){
         try {
@@ -92,11 +101,11 @@ class Relational {
     }
 
     /**
-     * 
-     * @param type $select
-     * @param type $table
-     * @param array $array
-     * @return type
+     * Ejecuta una consulta indicando el nombre de la tabla y los campos. Luego devuelve los resultados.<br><br>
+     * Executes a query indicating the name of the table and the fields. Then returns the results.
+     * @param string $select Los campos, ej: (nombre, apellidos, ...)<br>The fields, ex: (name, last_name, ...)
+     * @param string $table El nombre de la tabla.<br>The name of the table.
+     * @return array Datos devueltos.<br>Returned data.
      */
     public function select($fields, $table){
         try {
@@ -109,11 +118,12 @@ class Relational {
     }
     
     /**
-     * 
-     * @param type $select
-     * @param type $table
-     * @param type $where
-     * @return type
+     * Ejecuta una consulta indicando el nombre de la tabla, los campos y la condición 'where'. Luego devuelve los resultados.<br><br>
+     * Executes a query indicating the name of the table, the fields and the condition 'where'. Then returns the results.
+     * @param string $select Los campos, ej: (nombre, apellidos, ...)<br>The fields, ex: (name, last_name, ...)
+     * @param string $table El nombre de la tabla.<br>The name of the table.
+     * @param array $where Condición 'where'.<br>Condition 'where'.
+     * @return array Datos devueltos.<br>Returned data.
      */
     public function select_where($select, $table, array $where){
         $wk = '';
@@ -132,10 +142,11 @@ class Relational {
     }
     
     /**
-     * 
-     * @param type $table
-     * @param type $where
-     * @return type
+     * Ejecuta una consulta indicando el nombre de la tabla y la condición 'where'. Luego devuelve los resultados.<br><br>
+     * Executes a query indicating the name of the table and the condition 'where'. Then returns the results.
+     * @param string $table El nombre de la tabla.<br>The name of the table.
+     * @param array $where Condición 'where'.<br>Condition 'where'.
+     * @return array Datos devueltos.<br>Returned data.
      */
     public function where($table, array $where){
         $wk = '';
@@ -154,9 +165,10 @@ class Relational {
     }        
     
     /**
-     * 
-     * @param type $table
-     * @return type
+     * Devuelve todos los datos de una tabla.<br><br>
+     * Returns all data from a table.
+     * @param string $table El nombre de la tabla.<br>The name of the table.
+     * @return array Datos devueltos.<br>Returned data.
      */
     public function table($name){
         try {
@@ -169,9 +181,10 @@ class Relational {
     }
     
     /**
-     * 
-     * @param type $table
-     * @param array $data
+     * Inserta datos en una tabla.<br><br>
+     * Insert data into a table.
+     * @param string $table El nombre de la tabla.<br>The name of the table.
+     * @param array $data Datos a insertar.<br>Data to insert.
      */
     public function insert($table, array $data){
         ksort($data);        
@@ -189,29 +202,30 @@ class Relational {
     }
         
     /**
-     * 
-     * @param type $table
-     * @param array $data
-     * @param array $where
+     * Actualiza datos de una tabla.<br><br>
+     * Update data in a table.
+     * @param string $table El nombre de la tabla.<br>The name of the table.
+     * @param array $data Datos a actualizar.<br>Data to update.
+     * @param array $where Condición 'where'.<br>Condition 'where'.
      */
     public function update($table, array $data, array $where){
         ksort($data);
-        /* */
-        $fieldDetails = NULL;
+        /** 1°... */
+        $field_details = null;
         foreach($data as $key => $value){
-            $fieldDetails.= "`$key`=:$key,";
+            $field_details.= "`$key`=:$key,";
         }        
-        $fieldDetails = rtrim($fieldDetails, ',');                
-        /* */
+        $fields = rtrim($field_details, ',');                
+        /** 2°... */
         $wk = '';
         $wv = '';
         foreach($where as $kw => $vw){
             $wk = $kw;
             $wv = $vw;
         }
-        /* */
+        /** 3°... */
         try {
-            $sth = $this->connection->prepare("UPDATE $table set $fieldDetails where $wk = '$wv'");
+            $sth = $this->connection->prepare("UPDATE $table set $fields where $wk = '$wv'");
             foreach($data as $key => $value){
                 $sth->bindValue(":$key", $value);
             }        
@@ -222,10 +236,11 @@ class Relational {
     }
     
     /**
-     * 
-     * @param type $table
-     * @param array $data
-     * @param type $limit
+     * Elimina registros de una tabla.<br><br>
+     * Removes rows from a table.
+     * @param string $table El nombre de la tabla.<br>The name of the table.
+     * @param array $where Condición 'where'.<br>Condition 'where'.
+     * @param int $limit LIMIT
      */
     public function delete($table, array $where, $limit = 1){
         try {
@@ -240,21 +255,17 @@ class Relational {
     }
     
     /**
-     * 
-     * @param type $table
-     * @return mixed
+     * Devuelve el nombre de la clave primaria de una tabla.<br><br>
+     * Returns the name of the primary key of a table.
+     * @param string $table El nombre de la tabla.<br>The name of the table.
+     * @return string El nombre de la clave primaria.<br>The primary key's name.
      */
     public function primary_key($table){
         try {
             $sth = $this->connection->prepare("SHOW INDEX FROM $table WHERE Key_name = 'PRIMARY'");
             $sth->execute();
             $key = $sth->fetch();
-            $ret = "";
-            if(isset($key[4])){
-                $ret = $key[4];
-            } else {
-                $ret = "";
-            }
+            $ret = (isset($key[4])) ? $key[4] : '';
         } catch(PDOException $e){
             $this->pdo->exception($e);
         }
@@ -262,9 +273,10 @@ class Relational {
     }
     
     /**
-     * 
-     * @param type $table
-     * @return array
+     * Devuelve los campos de una tabla.<br><br>
+     * Returns the fields in a table.
+     * @param string $table El nombre de la tabla.<br>The name of the table.
+     * @return array Datos devueltos.<br>Returned data.
      */
     public function fields($table){
         try {

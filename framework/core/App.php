@@ -10,79 +10,190 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0.1
+ * @version 1.0.2
  * 
  */
 
 /**
- * Funciones útiles para la aplicación y más...
- * Util functions to app and more...
+ * Clase principal que inicializa la aplicación.<br><br>
+ * Main class that initializes the app.
+ * 
+ * (El nombre de esta clase fue 'Bootstrap' hasta antes de la versión 1.0.2, la anterior clase 'App' fue eliminada)<br><br>
+ * (The name of this class was 'Bootstrap' up before version 1.0.2, the last class 'App' was deleted)
  */
-class App {	
+class App {
+    private $_url = null;
+    private $_controller = null;
+    private $_controller_path = CONTROLLERS_PATH;
+    private $_model_path = MODELS_PATH;    
+    private $_error_file = ERROR_FILE;
+    private $_default_file = DEFAULT_FILE;
 
     /**
-     * Devuelve la url base de la aplicación, ej: http://www.mipagina.com/ <b>¡No eliminar ni modificar!</b><br><br>
-     * Returns the base url of webapp, ex: http://www.mipage.com/ <b>Not delete or modify!</b>
-     * @param string $url Agregar controlador, métodos y parámetros a la url, ej: http://www.mipagina.com/controlador/metodo/params <br>Add controller, methods and params to url, ex: http://www.mipage.com/controller/method/params
-     * @return string URL.
+     * Inicia la aplicacion.<br><br>
+     * Starts the app.
+     * @return boolean|nothing
      */
-    public static function base($url = ''){
-        return URL.$url;
-        /* $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? 'https://' : 'http://'; // checking if the https is enabled
-        $baseUrl.= isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : getenv('HTTP_HOST'); // checking adding the host name to the website address
-        $baseUrl.= isset($_SERVER['SCRIPT_NAME']) ? dirname($_SERVER['SCRIPT_NAME']) : dirname(getenv('SCRIPT_NAME')); // adding the directory name to the created url and then returning it.
-        $base = $baseUrl;
-        if(!strrchr('/', $base)){
-            return $base.= '/'.$url;            
+    public function start(){
+        // Recibe la $_url | Gets the url
+        $this->_get_url();                     
+        // Carga el controlador principal | Loads the main controller
+        /**
+         * ejemplo: si visitas http://www.mipagina.com/ carga el controlador principal
+         * example: if you visit http://www.mipage.com/ loads the main controller
+         */
+        if(empty($this->_url[0])){
+            $this->_load_default_controller();            
+            return false;
+        }
+        $this->_load_existing_controller();
+        $this->_call_controller_method();
+    }
+
+    /**
+     * Obtiene $_GET de 'url'.<br><br>
+     * Fetches the $_GET from 'url'.
+     */
+    private function _get_url(){
+        $url = isset($_GET['url_tvk_dsfdaojdiowndoiwednd']) ? $_GET['url_tvk_dsfdaojdiowndoiwednd'] : null;
+        $url = rtrim($url, '/');
+        $url = filter_var($url, FILTER_SANITIZE_URL);
+        $this->_url = explode('/', $url);
+    }    
+
+    /**
+     * Se carga si no hay un parámetro GET pasado.<br><br>
+     * This loads if there is no GET parameter passed.
+     * @param type $param
+     */
+    private function _load_default_controller(){
+        require $this->_controller_path.$this->_default_file;
+        $def = explode('.', $this->_default_file);
+        $this->_controller = new $def[0];
+        if(!$this->_controller instanceof MainController){
+            ExecuteError::other_error('¿Y la clase MainController?', 'Aún no has heredado la clase MainController en tu controlador.');
+        }
+        if(!method_exists($this->_controller, 'index')){
+            $this->_method_index_not_exists();
+        }
+        $this->_controller->index();
+    }
+    
+    /**
+     * Carga un controlador existente si hay un parámetro GET pasado.<br><br>
+     * Load an existing controller if there is a GET parameter passed.
+     * @return boolean|string
+     */
+    private function _load_existing_controller(){
+        $file = $this->_controller_path.$this->_url[0].'.php';
+        if(file_exists($file)){
+            require $file;
+            $this->_controller = new $this->_url[0];
         } else {
-            return $base.= $url;
-        } */
+            $this->_error();
+            return false;
+        }                
     }
 
     /**
-     * Devuelve la url base de los assets(css, js, img). <b>¡No eliminar ni modificar!</b><br><br>
-     * Returns the base url of assets(css, js, img). <b>Not delete or modify!</b>
-     * @param string $asset Tu css, js, img... a cargar.<br>Your css, js, img... to load.
-     * @return string URL de assets.<br>Assets URL.
+     * Si un método es pasado en el parametro GET url.<br><br>
+     * If a method is passed in the GET url parameter.<br><br>
+     * http://www.yourdomain.com/controller/method/(param)/(param)/(param)<br>
+     * url[0] = Controlador / Controller <br>
+     * url[1] = Método / Method <br>
+     * url[2] = Parámetro / Parameter <br>
+     * url[3] = Parámetro / Parameter <br>
+     * url[4] = Parámetro / Parameter... <br>
+     * Y así... / And so...
      */
-    public static function assets($asset = ''){
-        return URL.ASSETS.$asset;
-        /* $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? 'https://' : 'http://'; // checking if the https is enabled
-        $baseUrl.= isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : getenv('HTTP_HOST'); // checking adding the host name to the website address
-        $baseUrl.= isset($_SERVER['SCRIPT_NAME']) ? dirname($_SERVER['SCRIPT_NAME']) : dirname(getenv('SCRIPT_NAME')); // adding the directory name to the created url and then returning it.
-        return $baseUrl.= '/'.ASSETS.$asset; */
-    }
-
-    /**
-     * Comprueba si el formulario está siendo enviado por el método POST.<br><br>
-     * Checks if the form is being send by POST method.
-     * @param string $message Mensaje de error.<br>Error message.
-     * @param boolean $redirect Si se desea redireccionar a la página principal poner 'true'.<br>If you should redirect to main page, write true.
-     */
-    public static function not_post($message = 'Error', $redirect = false, $url = ''){
-        if($_SERVER['REQUEST_METHOD'] != 'POST'){
-            if($redirect){
-                echo $message;
-                Redirect::to($url);
+    private function _call_controller_method(){
+        $length = count($this->_url);
+        if($length > 1){
+            // Se asegura de que el método que estamos llamando existe y no es privado ni protegido.
+            // Make sure the method we're calling exists and it isn't private or protected.
+            if(!method_exists($this->_controller, $this->_url[1])){
+                $this->_error();
             }
-            exit($message);
+            $method = new ReflectionMethod($this->_controller, $this->_url[1]);
+            if($method->isPrivate() || $method->isProtected()){
+                $this->_error();
+            }
+        }
+        // Determina que cargar | Determite what to load
+        // Acepta hasta 10 parámetros, si es que desearas más, sólo debes modificar cuidadosamente este código.
+        // Accepts 10 parameters, if you wished more, just need to modify this code carefully.
+        switch($length){
+            case 12:
+                // Controller->Method(Param1, Param2, Param3, Param4, Param5, Param6, Param 7, Param 8, Param 9, Param 10)
+                $this->_controller->{$this->_url[1]}($this->_url[2], $this->_url[3], $this->_url[4], $this->_url[5], $this->_url[6], $this->_url[7], $this->_url[8], $this->_url[9], $this->_url[10], $this->_url[11]);
+                break;
+            case 11:
+                // Controller->Method(Param1, Param2, Param3, Param4, Param5, Param6, Param 7, Param 8, Param 9)
+                $this->_controller->{$this->_url[1]}($this->_url[2], $this->_url[3], $this->_url[4], $this->_url[5], $this->_url[6], $this->_url[7], $this->_url[8], $this->_url[9], $this->_url[10]);
+                break;
+            case 10:
+                // Controller->Method(Param1, Param2, Param3, Param4, Param5, Param6, Param 7, Param 8)
+                $this->_controller->{$this->_url[1]}($this->_url[2], $this->_url[3], $this->_url[4], $this->_url[5], $this->_url[6], $this->_url[7], $this->_url[8], $this->_url[9]);
+                break;
+            case 9:
+                // Controller->Method(Param1, Param2, Param3, Param4, Param5, Param6, Param 7)
+                $this->_controller->{$this->_url[1]}($this->_url[2], $this->_url[3], $this->_url[4], $this->_url[5], $this->_url[6], $this->_url[7], $this->_url[8]);
+                break;
+            case 8:
+                // Controller->Method(Param1, Param2, Param3, Param4, Param5, Param6)
+                $this->_controller->{$this->_url[1]}($this->_url[2], $this->_url[3], $this->_url[4], $this->_url[5], $this->_url[6], $this->_url[7]);
+                break;
+            case 7:
+                // Controller->Method(Param1, Param2, Param3, Param4, Param5)
+                $this->_controller->{$this->_url[1]}($this->_url[2], $this->_url[3], $this->_url[4], $this->_url[5], $this->_url[6]);
+                break;
+            case 6:
+                // Controller->Method(Param1, Param2, Param3, Param4)
+                $this->_controller->{$this->_url[1]}($this->_url[2], $this->_url[3], $this->_url[4], $this->_url[5]);
+                break;
+            case 5:
+                // Controller->Method(Param1, Param2, Param3)
+                $this->_controller->{$this->_url[1]}($this->_url[2], $this->_url[3], $this->_url[4]);                
+                break;
+            case 4:
+                // Controller->Method(Param1, Param2)
+                $this->_controller->{$this->_url[1]}($this->_url[2], $this->_url[3]);
+                break;
+            case 3:
+                // Controller->Method(Param1)
+                $this->_controller->{$this->_url[1]}($this->_url[2]);
+                break;
+            case 2:
+                // Controller->Method
+                $this->_controller->{$this->_url[1]}();
+                break;            
+            default:
+                if(!method_exists($this->_controller, 'index')){
+                    $this->_method_index_not_exists();
+                }
+                $this->_controller->index();
+                break;
         }
     }
-
+    
     /**
-     * Comprueba si el formulario está siendo enviado por el método GET.<br><br>
-     * Checks if the form is being send by GET method.
-     * @param string $message Mensaje de error.<br>Error message.
-     * @param boolean $redirect Si se desea redireccionar a la página principal poner 'true'.<br>If you should redirect to main page, write true.
+     * Muestra una página de error si no existe lo solicitado.<br><br>
+     * Display an error page if nothing exists.
+     * @return boolean
      */
-    public static function not_get($message = 'Error', $redirect = false, $url = ''){
-        if($_SERVER['REQUEST_METHOD'] != 'GET'){
-            if($redirect){
-                echo $message;
-                Redirect::to($url);
-            }
-            exit($message);
-        }
+    private function _error(){
+        require 'app/errors/'.$this->_error_file;
+        $errf = explode('.', $this->_error_file);
+        $error = new $errf[0];
+        $error->index();
     }
-
+    
+    /**
+     * Se lanza si el controlador no tiene el método index.<br><br>
+     * Thrown if the controller does not have the index method.
+     */
+    private function _method_index_not_exists(){        
+        ExecuteError::not_index();
+    }
+    
 }

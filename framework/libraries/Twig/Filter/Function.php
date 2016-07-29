@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -15,19 +14,16 @@
  * @package    twig
  * @author     Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Filter_Function extends Twig_Filter
-{
+class Twig_Filter_Function extends Twig_Filter {
     protected $function;
 
-    public function __construct($function, array $options = array())
-    {
+    public function __construct($function, array $options = array()) {
         parent::__construct($options);
-
         $this->function = $function;
     }
 
-    public function compile()
-    {
+    public function compile() {
         return $this->function;
     }
+
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -15,8 +14,7 @@
  * @package twig
  * @author  Fabien Potencier <fabien@symfony.com>
  */
-abstract class Twig_TokenParser implements Twig_TokenParserInterface
-{
+abstract class Twig_TokenParser implements Twig_TokenParserInterface {
     protected $parser;
 
     /**
@@ -24,8 +22,8 @@ abstract class Twig_TokenParser implements Twig_TokenParserInterface
      *
      * @param $parser A Twig_Parser instance
      */
-    public function setParser(Twig_Parser $parser)
-    {
+    public function setParser(Twig_Parser $parser) {
         $this->parser = $parser;
     }
+
 }

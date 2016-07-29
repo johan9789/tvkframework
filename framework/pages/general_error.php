@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,25 +28,21 @@ window.onload = function(){ /* hace que se cargue la función lo que predetermin
     
 <div class="navbar navbar-default navbar-static-top bsnavbar" style="background-color: red;">
     <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#"><h1>TvK Framework 1.0.1</h1></a>
-        </div>
+        <div class="navbar-header"><a class="navbar-brand" href="#"><h1>TvK Framework 1.0.2</h1></a></div>
         <div class="collapse navbar-collapse"></div>
     </div>
 </div>
-    
+
 <div id="container bs-docs-container">
-    <div class="row">    
+    <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10" role="main">
             <div class="bs-docs-section">
-                <div class="page-header">
-                    <h2><b><?php echo $exception; ?></b></h2>                
-                </div>
-                <h2><b>Error:</b> '<?php echo $error; ?>'</h2>                
-                <h3>Ubicación: <?php echo $archivo; ?></h3>                
+                <div class="page-header"><h2><b><?php echo $exception; ?></b></h2></div>
+                <h2><b>Error:</b> <?php echo $error; ?></h2>
+                <h3>Ubicación: <?php echo $archivo; ?></h3>
                 <h3>Línea de error: <?php echo $linea; ?></h3>
-                <h3>Código de error <?php echo $numero; ?></h3>                
+                <h3>Código de error <?php echo $numero; ?></h3>
                 <h3 onclick="muestra_oculta('hide');" id="var_act">¿Ver variables actuales?</h3>
                 <pre id="hide"><?php print_r($GLOBALS); ?></pre>
             </div>

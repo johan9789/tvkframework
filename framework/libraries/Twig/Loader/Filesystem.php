@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -15,8 +14,7 @@
  * @package    twig
  * @author     Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Loader_Filesystem implements Twig_LoaderInterface
-{
+class Twig_Loader_Filesystem implements Twig_LoaderInterface {
     protected $paths;
     protected $cache;
 
@@ -25,8 +23,7 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface
      *
      * @param string|array $paths A path or an array of paths where to look for templates
      */
-    public function __construct($paths)
-    {
+    public function __construct($paths) {
         $this->setPaths($paths);
     }
 
@@ -35,8 +32,7 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface
      *
      * @return array The array of paths where to look for templates
      */
-    public function getPaths()
-    {
+    public function getPaths() {
         return $this->paths;
     }
 
@@ -45,8 +41,7 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface
      *
      * @param string|array $paths A path or an array of paths where to look for templates
      */
-    public function setPaths($paths)
-    {
+    public function setPaths($paths) {
         if (!is_array($paths)) {
             $paths = array($paths);
         }
@@ -62,8 +57,7 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface
      *
      * @param string $path A path where to look for templates
      */
-    public function addPath($path)
-    {
+    public function addPath($path) {
         // invalidate the cache
         $this->cache = array();
 
@@ -81,8 +75,7 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface
      *
      * @return string The template source code
      */
-    public function getSource($name)
-    {
+    public function getSource($name) {
         return file_get_contents($this->findTemplate($name));
     }
 
@@ -93,8 +86,7 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface
      *
      * @return string The cache key
      */
-    public function getCacheKey($name)
-    {
+    public function getCacheKey($name) {
         return $this->findTemplate($name);
     }
 
@@ -104,13 +96,11 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface
      * @param string    $name The template name
      * @param timestamp $time The last modification time of the cached template
      */
-    public function isFresh($name, $time)
-    {
+    public function isFresh($name, $time) {
         return filemtime($this->findTemplate($name)) < $time;
     }
 
-    protected function findTemplate($name)
-    {
+    protected function findTemplate($name) {
         // normalize name
         $name = preg_replace('#/{2,}#', '/', strtr($name, '\\', '/'));
 
@@ -121,16 +111,15 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface
         $this->validateName($name);
 
         foreach ($this->paths as $path) {
-            if (is_file($path.'/'.$name)) {
-                return $this->cache[$name] = $path.'/'.$name;
+            if (is_file($path . '/' . $name)) {
+                return $this->cache[$name] = $path . '/' . $name;
             }
         }
 
         throw new Twig_Error_Loader(sprintf('Unable to find template "%s" (looked into: %s).', $name, implode(', ', $this->paths)));
     }
 
-    protected function validateName($name)
-    {
+    protected function validateName($name) {
         if (false !== strpos($name, "\0")) {
             throw new Twig_Error_Loader('A template name cannot contain NUL bytes.');
         }
@@ -149,4 +138,5 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface
             }
         }
     }
+
 }

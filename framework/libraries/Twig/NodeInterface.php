@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Twig.
  *
@@ -15,8 +14,8 @@
  * @package    twig
  * @author     Fabien Potencier <fabien@symfony.com>
  */
-interface Twig_NodeInterface
-{
+interface Twig_NodeInterface {
+
     /**
      * Compiles the node to PHP.
      *

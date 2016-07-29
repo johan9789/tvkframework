@@ -10,7 +10,7 @@
  * @license http://www.tvkframework.com/user_guide/license.html
  * @link http://www.tvkframework.com/
  * @since 1.0
- * @version 1.0.1
+ * @version 1.0.2
  * 
  */
 
@@ -26,31 +26,42 @@ class MainController {
      * @param string $name Nombre del modelo a cargar.<br>Model name to load.
      * @param string $model_path Ruta del modelo, si se encuentra en una carpeta diferente.<br> Model path, if is allowed in other folder.
      */
-    public function load($name, $model_path = 'app/models/'){
-        $path = $model_path.$name.'.php';        
-        if(file_exists($path)){
-            require $model_path.$name.'.php';
-        } else {
-            require_once 'app/errors/error.php';
-            $error = new Error();
-            $error->other_error('Error :D', "La clase '$name' no existe.");
+    public function load($name){
+        $path = MODELS_PATH.$name.'.php';        
+        if(!file_exists($path)){
+            ExecuteError::other_error('Error :D', "La clase '$name' no existe en '".MODELS_PATH."'.");            
         }
+        require $path;
     }
 
     /**
-     *
+     * 
+     * @param type $view
+     * @param array $data
      * @since 1.0.1
      */
-    public function render($view, $data = array()){
+    public function render($view, array $data = array()){
         View::render($view, $data);
     }
     
     /**
-     *
+     * 
+     * @param type $view
+     * @param array $data
      * @since 1.0.1
      */
-    public function template($view, $data = array()){
+    public function template($view, array $data = array()){
         View::template($view, $data);
     }
+    
+    /**
+     * 
+     * @param type $view
+     * @param array $data
+     * @since 1.0.2
+     */
+    /* public function twig($view, array $data = array()){
+        View::twig($view, $data);
+    } */
 
 }
