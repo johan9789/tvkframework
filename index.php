@@ -22,8 +22,8 @@ require_once 'error.php';
 require_once 'app/config/paths.php';
 require_once 'app/config/database.php';
 require_once 'app/config/other.php';
-// require_once SYSTEM.'util/Functions.php';
 require_once SYSTEM.'libraries/Twig/Autoloader.php';
+
 /** 
  * Carga las clases que hacen posible iniciar la aplicación.
  * Loads the classes that enable start the app.
